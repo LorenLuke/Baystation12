@@ -861,3 +861,9 @@ var/list/hit_appends = list("-OOF", "-ACK", "-UGH", "-HRNK", "-HURGH", "-GLORF")
 //Chemistry
 
 #define CHEM_SYNTH_ENERGY	500	//How much energy does it take to synthesize 1 unit of chemical, in J
+#define SOLID 1
+#define LIQUID 2
+#define GAS 3
+#define FOOD_METABOLISM 0.4
+#define REAGENTS_OVERDOSE 30
+#define REM REAGENTS_EFFECT_MULTIPLIER

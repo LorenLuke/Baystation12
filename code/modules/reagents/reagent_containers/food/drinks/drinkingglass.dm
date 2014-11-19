@@ -18,22 +18,22 @@
 				switch(R.id)*/
 		if (reagents.reagent_list.len > 0)
 			var/datum/reagent/R = reagents.get_master_reagent()
-			
+
 			if(R.glass_icon_state)
 				icon_state = R.glass_icon_state
 			else
 				icon_state = "glass_brown"
-			
+
 			if(R.glass_name)
 				name = R.glass_name
 			else
 				name = "Glass of.. what?"
-			
+
 			if(R.glass_desc)
 				desc = R.glass_desc
 			else
 				desc = "You can't really tell what this is."
-			
+
 			if(R.glass_center_of_mass)
 				center_of_mass = R.glass_center_of_mass
 			else

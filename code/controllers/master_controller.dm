@@ -36,6 +36,16 @@ datum/controller/game_controller
 	var/list/shuttle_list	                    // For debugging and VV
 	var/datum/ore_distribution/asteroid_ore_map // For debugging and VV.
 
+datum/controller/game_controller/proc/process_chemistry()
+	var/i = 1
+	while(i<=chem_holders.len)
+		var/datum/reagents/R= chem_holders[i]
+		if(R)
+			last_thing_processed = R.type
+			R.process()
+			i++
+			continue
+		chem_holders.Cut(i,i+1)
 
 datum/controller/game_controller/New()
 	//There can be only one master_controller. Out with the old and in with the new.
@@ -230,6 +240,11 @@ datum/controller/game_controller/proc/process()
 				//EVENTS
 				timer = world.timeofday
 				process_events()
+				events_cost = (world.timeofday - timer) / 10
+
+				//CHEMSTRY
+				timer = world.timeofday
+				process_chemistry()
 				events_cost = (world.timeofday - timer) / 10
 
 				//TICKER

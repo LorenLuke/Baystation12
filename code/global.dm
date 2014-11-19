@@ -3,12 +3,12 @@
 
 var/global/obj/effect/datacore/data_core = null
 
-
 var/global/list/active_areas = list()
 var/global/list/all_areas = list()
 var/global/list/machines = list()
 var/global/list/processing_objects = list()
 var/global/list/active_diseases = list()
+var/global/list/chem_holders = list()
 var/global/list/med_hud_users = list() //list of all entities using a medical HUD.
 var/global/list/sec_hud_users = list() //list of all entities using a security HUD.
 		//items that ask to be called every cycle
