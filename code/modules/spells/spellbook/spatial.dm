@@ -13,7 +13,7 @@
 	book_flags = CAN_MAKE_CONTRACTS|INVESTABLE
 	max_uses = 10
 
-	spells = list(/spell/targeted/ethereal_jaunt = 				1,
+	spells = list(/spell/targeted/ethereal_jaunt/darkcult = 				1,
 				/spell/aoe_turf/blink = 						1,
 				/spell/area_teleport = 							1,
 				/spell/targeted/projectile/dumbfire/passage = 	1,
