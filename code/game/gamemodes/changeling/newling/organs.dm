@@ -2,9 +2,9 @@
 	if(!src.changeling)
 		var/organ_name = src.name
 		for(var/obj/item/organ/O in typesof(/obj/item/organ)
-			if(O.name == organ_name && O.changeling)
-				var
-	else
+			if(O.name == organ_name && !O.changeling)
+				O.changeling = true
+
 
 
 /obj/item/organ/

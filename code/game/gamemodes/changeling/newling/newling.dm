@@ -14,8 +14,8 @@
 	New()
 
 
-	proc/check_nutrition(var/nut = 0)
-		if( < nut)
+	proc/check_nutrition(var/nutr = 0)
+		if(host.nutrition < nutr)
 			return 0
 		return 1
 
@@ -39,8 +39,14 @@
 		src.owner=owned
 
 
-	proc/usepower(var/datum/newling/ling, var/mob/living/carbon/target)
+	proc/usepower(var/nutri_check = 0, var/ignore_stat = 0, var/mob/living/target)
+	var/datum/newling/ling = owner,
+	if(!ling.check_nutrition(nutri_check))
 		return
+	if(!ignore_stat && ling.host.stat)
+		return
+
+
 
 
 
@@ -77,20 +83,16 @@
 /datum/newling/proc/caneat()
 		var/list/bodypartscovered
 		var/caneat = 1
+		var/timetoeat = 30
 
 		if(FACE in bodypartscovered)
 			caneat= 0
-		var/timetoeat = 30
 		if(ling.form = "pure")
 			timetoeat = 15
 			if(ling.kit = "offensive")
 				if(!UPPER_TORSO in bodypartscovered)
 					caneat = 1
-				timetoeat = 8
-
-		else
-			if()
-				caneat = 1
+					timetoeat = 8
 
 		if(caneat)
 			return timetoeat
@@ -101,14 +103,14 @@
 /datum/newling/proc/newlingdevour()
 
 	if(host.stomach_contents.len)
-
 		return 0
+
 
 	var/eattime = caneat()
 	if(!eattime)
 		return 0
 
-	var/obj/item/weapon/grab/G = src.get_active_hand()
+	var/obj/item/weapon/grab/G = host.get_active_hand()
 	if(!istype(G))
 		src << "<span class='warning'>We must be grabbing a creature in our active hand to absorb them.</span>"
 		return 0
@@ -117,15 +119,13 @@
 		src << "<span class='warning'>We must have a better grip to absorb this creature.</span>"
 		return 0
 
-	src.visible_message("<span class='danger'>\The [host] is attempting to devour \the [victim]!</span>")
-		if(!do_mob(src, victim, eattime))
+	host.visible_message("<span class='danger'>\The [host] is attempting to devour \the [victim]!</span>")
+		if(!do_mob(host, victim, eattime*10))
 			return 0
-	src.visible_message("<span class='danger'>\The [host] devours \the [victim]!</span>")
+	host.visible_message("<span class='danger'>\The [host] devours \the [victim]!</span>")
 	admin_attack_log(host, victim, "Devoured.", "Was devoured by.", "devoured")
 	victim.forceMove(host)
 	host.stomach_contents.Add(victim)
-
-
 
 
 ////////////
@@ -162,13 +162,13 @@
 
 
 /datum/newling/proc/armblade()
-	usepower()
+	if usepower()
 
 /datum/newling/proc/camouflage()
-
+	if usepower()
 
 /datum/newling/proc/controlparasite()
-	usepower()
+	if usepower()
 
 
 
@@ -189,7 +189,6 @@
 	usepower()
 
 
-
 /datum/newling/proc/formlimb
 	usepower()
 
@@ -197,8 +196,6 @@
 
 /datum/newling/proc/dialysis
 	usepower()
-
-
 
 
 /datum/newling/proc/leap
@@ -214,17 +211,17 @@
 
 	return 0
 
-/datum/newling/proc/oxyconversion
+/datum/newling/proc/oxyconversion()
 	usepower()
 
-/datum/newling/proc/radburst
+/datum/newling/proc/radburst()
 	usepower()
 
-/datum/newling/proc/regenerate
+/datum/newling/proc/regenerate()
 	usepower()
 
 /datum/newling/proc/screech()
-
+	usepower()
 
 /datum/newling/proc/sliphandcuffs()
 
@@ -268,62 +265,3 @@
 
 
 
-/obj/item/weapon/changelingsting
-	name = "barbed stinger"
-	desc = "It looks like a massive stinger!"
-	throw_force = 50
-	thrown_force_divisor = 0.1
-
-	var/attached = 0
-	var/stingtype = ""
-	var/datum/reagents/holder
-	var/mob/living/carbon/human/target
-
-	New()
-
-		holder = create_reagents(50)
-		holder |= NOREACT
-		switch (stingtype)
-			if("paralysis")
-				holder.add_reagent("potassium_chlorophoride",5)
-				holder.add_reagent("chloralhydrate", 5)
-				holder.add_reagent("inaprovaline", 20)
-				holder.add_reagent("tricordrazine", 20)
-			if("toxin")
-				holder.add_reagent("toxin", 10)
-				holder.add_reagent("amatoxin", 10)
-				holder.add_reagent("carpotoxin", 10)
-				holder.add_reagent("phoron", 5)
-				holder.add_reagent("slimejelly", 5)
-				holder.add_reagent("cryptobiolin", 10)
-
-			if("viral")
-				holder.add_reagent("transformation_toxin", 50)
-
-			if(!"")
-				qdel(src)
-				return 0
-
-		processing_objects.Add(src)
-
-		return 1
-
-/obj/item/weapon/changelingsting/process()
-	if(!attached && target)
-		if(target == src.loc)
-			attached = 1
-	else if((attached && src.loc != target) || !reagents.total_volume)
-		processing_objects.Remove(src)
-		return 0
-	else
-		holder.trans_to_mob(target, 2, CHEM_BLOOD)
-
-
-/obj/item/weapon/changelingsting/paralysis
-	stingtype = "paralysis"
-
-/obj/item/weapon/changelingsting
-	stingtype = "toxin"
-
-/obj/item/weapon/changelingsting
-	stingtype = "viral"
