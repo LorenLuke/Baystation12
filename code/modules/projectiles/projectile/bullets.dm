@@ -6,18 +6,43 @@
 	damage_type = BRUTE
 	nodamage = 0
 	check_armour = "bullet"
-	embed = 1
-	sharp = 1
+	var/puncture = 1 //
+	var/caliber = 0.357 //in inches
+	var/nose = 0.8 //diametral scalar or overall caliber
+	var/nose_type = 0 // 0 round, 1 flat, 2 pointed (AP), 3 hollowpoint, 4 frangible
+	var/velocity =  440//velocity in meters per second
+	var/weight = 125 // weight in grains (15.4323584 grains to gram)
+	var/projectile_length = 9 //mm
+	var/energy = 0 //joules, calculated later
+	var/momentum = 0
+
 	var/mob_passthrough_check = 0
 
 	muzzle_type = /obj/effect/projectile/bullet/muzzle
 
+/obj/item/projectile/bullet/New()
+	var/mass = (weight/15432.3584) //grains to kg
+	momentum = velocity * mass
+	energy = 0.5 * mass * velocity**2 //Joules
+
+
 /obj/item/projectile/bullet/on_hit(var/atom/target, var/blocked = 0)
+
+	var/pressure = energy/(area*6.
+
 	if (..(target, blocked))
 		var/mob/living/L = target
 		shake_camera(L, 3, 2)
 
 /obj/item/projectile/bullet/attack_mob(var/mob/living/target_mob, var/distance, var/miss_modifier)
+
+	//a = v^2/(2*0.1) v^2/2d (d = 2 inches, because that' about how fast a vest would stop it, if it would)
+	var/acceleration = (velocity**2)/(2*0.2)
+	var/force = mass * acceleration
+	var/area = (3.1415927*(nose*caliber/2)**2) * 0.00064516 //sq in * conversion to sq m
+	var/pressure = force / area
+
+
 	if(penetrating > 0 && damage > 20 && prob(damage))
 		mob_passthrough_check = 1
 	else
@@ -139,6 +164,7 @@
 	fire_sound = 'sound/weapons/gunshot/gunshot_strong.ogg'
 	damage = 60
 
+
 /obj/item/projectile/bullet/pistol/rubber //"rubber" bullets
 	name = "rubber bullet"
 	check_armour = "melee"
@@ -172,6 +198,7 @@
 	pellets = 6
 	range_step = 1
 	spread_step = 10
+
 
 /* "Rifle" rounds */
 
@@ -253,3 +280,166 @@
 /obj/item/projectile/bullet/pistol/cap/process()
 	loc = null
 	qdel(src)
+
+
+
+///////////////////////// real ammo
+/obj/item/projectile/bullet/b_22
+	caliber = 0.22 //in inches
+	velocity =  380//velocity in meters per second
+	weight = 40 // weight in grains (15.4323584 grains to gram)
+	nose = 0.7
+
+/obj/item/projectile/bullet/b_22/hp //hollowpoint
+	nose = 0.7
+	nose_type = 3
+
+/obj/item/projectile/bullet/b_223
+	caliber = 0.223 //in inches
+	velocity =  1140//velocity in meters per second
+	weight = 36 // weight in grains (15.4323584 grains to gram)
+	nose = 0.25
+	nose_type = 0
+
+/obj/item/projectile/bullet/b_556mm
+	caliber = 0.223 //in inches
+	velocity =  940//velocity in meters per second
+	weight = 62 // weight in grains (15.4323584 grains to gram)
+	nose = 0.1
+	nose_type = 1
+
+/obj/item/projectile/bullet/b_762mm
+	caliber = 0.308 //in inches
+	velocity =  833 //velocity in meters per second
+	weight = 147 // weight in grains (15.4323584 grains to gram)
+	nose_type = 2
+
+/obj/item/projectile/bullet/b_300win
+	caliber = 0.308 //in inches
+	velocity =  959 //velocity in meters per second
+	weight = 180 // weight in grains (15.4323584 grains to gram)
+	nose = 0.3
+	nose_type = 1
+
+/obj/item/projectile/bullet/b_357magnum
+	caliber = 0.357 //in inches
+	velocity =  440//velocity in meters per second
+	weight = 125 // weight in grains (15.4323584 grains to gram)
+	nose_type = 1
+	nose = 0.6
+
+/obj/item/projectile/bullet/b_38 //ACP
+	caliber = 0.357 //in inches
+	velocity =  300//velocity in meters per second
+	weight = 110 // weight in grains (15.4323584 grains to gram)
+	nose = 0.4
+
+/obj/item/projectile/bullet/b_38super
+	caliber = 0.357 //in inches
+	velocity =  475//velocity in meters per second
+	weight = 90 // weight in grains (15.4323584 grains to gram)
+
+/obj/item/projectile/bullet/b_9mm //makarov
+	caliber = 0.357 //in inches
+	velocity =  313//velocity in meters per second
+	weight = 95 // weight in grains (15.4323584 grains to gram)
+	nose = 0.5
+	nose_type = 1
+
+/obj/item/projectile/bullet/b_c9mm //9mm glisenti
+	caliber = 0.357 //in inches
+	velocity =  320//velocity in meters per second
+	weight = 123 // weight in grains (15.4323584 grains to gram)
+	nose = 0.5
+	nose_type = 1
+
+/obj/item/projectile/bullet/b_c10mm //10mm auto
+	caliber = 0.4 //in inches
+	velocity =  430//velocity in meters per second
+	weight = 155 // weight in grains (15.4323584 grains to gram)
+	nose = 0.6
+	nose_type = 1
+
+
+/obj/item/projectile/bullet/b_45acp
+	caliber = 0.45 //in inches
+	velocity =  373//velocity in meters per second
+	weight = 185 // weight in grains (15.4323584 grains to gram)
+	nose = 0.8
+
+/obj/item/projectile/bullet/b_50ae //action express
+	caliber = 0.5 //in inches
+	velocity =  450//velocity in meters per second
+	weight = 300 // weight in grains (15.4323584 grains to gram)
+	nose_type = 1
+	nose = 0.6
+
+/obj/item/projectile/bullet/b_500 //.500 S&W
+	caliber = 0.51 //in inches
+	velocity =  550//velocity in meters per second
+	weight = 400 // weight in grains (15.4323584 grains to gram)
+	nose_type = 1
+	nose = 0.6
+
+/obj/item/projectile/bullet/b_145mm //14.5x114 (HOLY SHIT)
+	caliber = 0.557 //in inches
+	velocity =  1000//velocity in meters per second
+	weight = 926 // weight in grains (15.4323584 grains to gram)
+	nose_type = 2
+	nose = 0.1
+
+
+///Shotguns
+
+/obj/item/projectile/bullet/sh_slug //slug
+	caliber = 0.729 //in inches
+	velocity =  549//velocity in meters per second
+	weight = 432 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/sh_bean //beanbag
+	piercing = 0
+	caliber = 0.729 //in inches
+	velocity =  90//velocity in meters per second
+	weight = 605 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/pellet/000_buck //6 pellets
+	caliber = 0.36 //in inches
+	velocity =  1000//velocity in meters per second
+	weight = 69.7 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/pellet/00_buck //8 pellets
+	caliber = 0.33 //in inches
+	velocity =  1000//velocity in meters per second
+	weight = 54 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/pellet/0_buck //9 pellets
+	caliber = 0.32 //in inches
+	velocity =  1000//velocity in meters per second
+	weight = 48 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+
+
+
+
+/obj/item/projectile/bullet/sh_410 //
+	caliber = 0.410 //in inches
+	velocity =  390//velocity in meters per second
+	weight = 926 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/sh_20ga //
+	caliber = 0.614 //in inches
+	velocity =  390//velocity in meters per second
+	weight = 926 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
+
+/obj/item/projectile/bullet/sh_12ga //
+	caliber = 0.729 //in inches
+	velocity =  425//velocity in meters per second
+	weight = 926 // weight in grains (15.4323584 grains to gram)
+	energy = 0 //joules, calculated later
