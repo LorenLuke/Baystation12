@@ -40,6 +40,9 @@
 	var/damage = 0
 	var/maxdamage = 500 // Relatively resilient, given how expensive it is, but once destroyed produces small explosion.
 
+	var/internal_damage
+	var/internal_maxdamage = 150
+
 	var/input_cut = 0
 	var/input_pulsed = 0
 	var/output_cut = 0

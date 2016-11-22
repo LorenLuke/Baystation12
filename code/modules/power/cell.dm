@@ -17,11 +17,14 @@
 	var/overlay_state
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 50)
 
+	var/watt_safety
 
 /obj/item/weapon/cell/New()
 	if(isnull(charge))
 		charge = maxcharge
 	c_uid = sequential_id(/obj/item/weapon/cell)
+
+	watt_safety = maxcharge/1000 KILOWATTS
 	..()
 
 /obj/item/weapon/cell/initialize()
@@ -60,6 +63,9 @@
 /obj/item/weapon/cell/proc/fully_charged()
 	return (charge == maxcharge)
 
+/obj/item/weapon/cell/proc/over_charged()
+	return (charge > maxcharge)
+
 // checks if the power cell is able to provide the specified amount of charge
 /obj/item/weapon/cell/proc/check_charge(var/amount)
 	return (charge >= amount)
@@ -84,7 +90,90 @@
 	var/amount_used = min(maxcharge-charge,amount)
 	charge += amount_used
 	update_icon()
+	if(over_charged())
+		overcharge_act()
 	return amount_used
+
+/obj/item/weapon/cell/proc/overcharge_act()
+	var/overcharge_percent = max(0, (charge-max_charge)/max_charge)
+	switch(overcharge_percent)
+		if(0 to 4)
+			if(prob(1))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety * random(1,5)/100)
+
+		if(5 to 9)//
+			if(prob(1))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety * random(6,10)/100)
+				if(prob(1))
+					//bluescreen APC
+
+		if(10 to 24)
+			if(prob(5))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety * random(11,25)/100)
+				if(prob(5))
+					if(prob(90))
+						//bluescreen APC
+					else
+						//fry APC
+
+		if(25 to 49)
+			if(prob(10))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety * random(26,49)/100)
+				if(prob(10))
+					if(prob(80))
+						//bluescreen APC
+					else if(prob(90))
+						//fry APC
+					else
+						//EMP
+						empulse(get_turf(src), overcharge_percent/30, overcharge_percent/10)
+
+		if(50 to 99)
+			if(prob(15))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety * random(50,99)/100)
+				if(prob(15))
+					if(prob(70))
+						//bluescreen APC
+					else if(prob(80))
+						//fry APC
+					else if(prob(90))
+						//EMP
+						empulse(get_turf(src), overcharge_percent/30, overcharge_percent/10)
+					else
+						//Explosion
+
+		if(100 to INFINITY)
+			if(prob(25))
+				//sparks
+				s.set_up(2, 1, src)
+				s.start()
+				use(watt_safety)
+				if(prob(25))
+					if(prob(50))
+						//bluescreen APC
+					else if(prob(70))
+						//fry APC
+					else if(prob(80))
+						//EMP
+						empulse(get_turf(src), overcharge_percent/30, overcharge_percent/10)
+					else
+						//Explosion
+
 
 /obj/item/weapon/cell/examine(mob/user)
 	..()

@@ -1069,8 +1069,17 @@
 
 		// show cell as fully charged if so
 		if(cell.charge >= cell.maxcharge)
-			cell.charge = cell.maxcharge
-			charging = 2
+			if(excess >= cell.watt_safety) // too much power and we overcharge.
+				var/ch = excess*CELLRATE/cell.watt_safety
+
+				ch = draw_power(ch/CELLRATE) // Removes the power we're taking from the grid
+				cell.give(ch*CELLRATE) // actually recharge the cell
+				lastused_charging = ch
+				lastused_total += ch // Sensors need this to stop reporting APC charging as "Other" load
+
+			else
+				cell.charge = cell.maxcharge
+				charging = 2
 
 		if(chargemode)
 			if(!charging)
@@ -1207,7 +1216,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 	// Aesthetically much better!
 	src.visible_message("<span class='notice'>[src]'s screen flickers with warnings briefly!</span>")
 	power_alarm.triggerAlarm(loc, src)
-	spawn(rand(2,5))
+	spawn(rand(20,50))
 		src.visible_message("<span class='notice'>[src]'s screen suddenly explodes in rain of sparks and small debris!</span>")
 		stat |= BROKEN
 		operating = 0
