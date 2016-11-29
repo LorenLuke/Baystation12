@@ -53,3 +53,33 @@
 
 /obj/item/clothing/glasses/hud/security/process_hud(var/mob/M)
 	process_sec_hud(M, 1)
+
+
+/obj/item/clothing/glasses/hud/thermal
+	name = "Optical Thermal Scanner"
+	desc = "Thermals in the shape of glasses."
+	icon_state = "thermal"
+	item_state = "glasses"
+	action_button_name = "Toggle Goggles"
+	origin_tech = list(TECH_MAGNET = 3)
+	toggleable = 1
+	vision_flags = SEE_MOBS
+	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	flash_protection = FLASH_PROTECTION_REDUCED
+
+	emp_act(severity)
+		if(istype(src.loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/M = src.loc
+			to_chat(M, "<span class='danger'>The Optical Thermal Scanner overloads and blinds you!</span>")
+			if(M.glasses == src)
+				M.eye_blind = 3
+				M.eye_blurry = 5
+				// Don't cure being nearsighted
+				if(!(M.disabilities & NEARSIGHTED))
+					M.disabilities |= NEARSIGHTED
+					spawn(100)
+						M.disabilities &= ~NEARSIGHTED
+		..()
+
+/obj/item/clothing/glasses/hud/thermal/process_hud(var/mob/M)
+	process_thermal_hud(M, 1)

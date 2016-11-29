@@ -82,3 +82,16 @@ mob/proc/in_view(var/turf/T)
 		if(get_dist(H, T) <= 7)
 			viewed += H
 	return viewed
+
+
+proc/process_thermal_hud(var/mob/M, var/person, var/mob/Alt)
+	if(!can_process_hud(M))
+		return
+
+	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, sec_hud_users)
+	for(var/mob/living/hot in P.Mob.in_view(P.Turf))
+
+		var/icon/original_icon = initial(hot.icon)
+		var/icon/I = original_icon.Blend(rgb(255,96,48,225))
+
+		P.Client.images += I
