@@ -10,6 +10,7 @@
 	layer = ABOVE_DOOR_LAYER
 	var/deploying
 	var/deployed
+	var/disabled = 0
 
 /obj/structure/droppod_door/New(var/newloc, var/autoopen)
 	..(newloc)
@@ -28,6 +29,7 @@
 
 /obj/structure/droppod_door/attack_hand(var/mob/user)
 	if(deploying) return
+	if(disabled) return
 	user << "<span class='danger'>You prime the explosive bolts. Better get clear!</span>"
 	sleep(30)
 	deploy()
