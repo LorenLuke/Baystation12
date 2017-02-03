@@ -127,6 +127,17 @@
 		src.adding += using
 		move_intent = using
 
+	if(hud_data.has_handtohand)
+		using = new /obj/screen()
+		using.name = "hand_to_hand"
+		using.icon = ui_style
+		using.icon_state = mymob.handtohand
+		using.screen_loc = ui_handtohand
+		using.color = ui_color
+		using.alpha = ui_alpha
+		src.adding += using
+		handtohand = using
+
 	if(hud_data.has_drop)
 		using = new /obj/screen()
 		using.name = "drop"

@@ -56,6 +56,7 @@ var/list/global_huds = list(
 	var/obj/screen/l_hand_hud_object
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
+	var/obj/screen/handtohand
 
 	var/list/adding
 	var/list/other

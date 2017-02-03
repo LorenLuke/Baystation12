@@ -216,6 +216,27 @@
 						usr.m_intent = "run"
 						usr.hud_used.move_intent.icon_state = "running"
 
+		if("hand_to_hand")
+			switch(usr.handtohand)
+				if("fists")
+					usr.handtohand = "kick"
+					usr.hud_used.handtohand.icon_state = "kick"
+				if("kick")
+					usr.handtohand = "headbutt"
+					usr.hud_used.handtohand.icon_state = "headbutt"
+				if("headbutt")
+					usr.handtohand = "tackle"
+					usr.hud_used.handtohand.icon_state = "tackle"
+				if("tackle")
+					usr.handtohand = "bite"
+					usr.hud_used.handtohand.icon_state = "bite"
+				if("bite")
+					usr.handtohand = "claws"
+					usr.hud_used.handtohand.icon_state = "claws"
+				if("claws")
+					usr.handtohand = "fists"
+					usr.hud_used.handtohand.icon_state = "fists"
+
 		if("Reset Machine")
 			usr.unset_machine()
 		if("internal")
