@@ -10,6 +10,9 @@
 	var/obj/screen/storage/stored_end
 	var/obj/screen/close/closer
 
+	var/use_close_button = 1
+	var/preserve_slots = 0
+
 /datum/storage_ui/default/New(var/storage)
 	..()
 	boxes = new /obj/screen/storage(  )
@@ -18,6 +21,13 @@
 	boxes.icon_state = "block"
 	boxes.screen_loc = "7,7 to 10,8"
 	boxes.layer = HUD_BASE_LAYER
+
+	if(src.storage)
+		if(src.storage.has_close_button) //storage.has_close_button won't work for some reason...
+			use_close_button = 1
+		else
+			use_close_button = 0
+
 
 	storage_start = new /obj/screen/storage(  )
 	storage_start.name = "storage"
@@ -48,10 +58,12 @@
 	stored_end.icon_state = "stored_end"
 	stored_end.layer = HUD_BASE_LAYER
 
-	closer = new /obj/screen/close(  )
-	closer.master = storage
-	closer.icon_state = "x"
-	closer.layer = HUD_BASE_LAYER
+	if(use_close_button)
+		closer = new /obj/screen/close(  )
+		closer.master = storage
+		closer.icon_state = "x"
+		closer.layer = HUD_BASE_LAYER
+
 
 /datum/storage_ui/default/Destroy()
 	close_all()
@@ -102,9 +114,15 @@
 	user.client.screen -= storage_start
 	user.client.screen -= storage_continue
 	user.client.screen -= storage_end
-	user.client.screen -= closer
+
+	if(use_close_button)
+		user.client.screen -= closer
+
 	user.client.screen -= storage.contents
-	user.client.screen += closer
+
+	if(use_close_button)
+		user.client.screen += closer
+
 	user.client.screen += storage.contents
 	if(storage.storage_slots)
 		user.client.screen += boxes
@@ -233,8 +251,8 @@
 		O.screen_loc = "4:[round((startpoint+endpoint)/2)+2],2:16"
 		O.maptext = ""
 		O.hud_layerise()
-
-	closer.screen_loc = "4:[storage_width+19],2:16"
+	if(use_close_button)
+		closer.screen_loc = "4:[storage_width+19],2:16"
 
 // Sets up numbered display to show the stack size of each stored mineral
 // NOTE: numbered display is turned off currently because it's broken

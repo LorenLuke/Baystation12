@@ -22,10 +22,52 @@
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile
 	var/use_sound = "rustle"	//sound played when used. null for no sound.
 
+	var/has_close_button = 1
+	var/preserve_slots = 1
+	var/slot_type = /obj/item/storage_slot
+
+	var/list/obj/item/contents_storage = list()
+
+
 	//initializes the contents of the storage with some items based on an assoc list. The assoc key must be an item path,
 	//the assoc value can either be the quantity, or a list whose first value is the quantity and the rest are args.
 	var/list/startswith
 	var/datum/storage_ui/storage_ui = /datum/storage_ui/default
+
+/obj/item/storage_slot
+	name = "empty slot"
+	icon = 'icons/mob/screen1.dmi'
+	icon_state = "blank"
+	w_class = 0
+	mouse_opacity = 2
+	var/obj/item/weapon/storage/parent_obj
+
+/obj/item/storage_slot/attack_hand(mob/user as mob)
+	return
+
+/obj/item/storage_slot/attackby(var/obj/item/A, mob/user as mob)
+
+	if(parent_obj.can_be_inserted(A, user, 1))
+		if(parent_obj.use_sound)
+			playsound(parent_obj.loc, parent_obj.use_sound, 50, 1, -5)
+		var/index = parent_obj.contents_storage.Find(src)
+		parent_obj.contents_storage.Insert(index, A)
+		user.remove_from_mob(A)
+		A.forceMove(src.parent_obj)
+		parent_obj.contents_storage -= src
+		parent_obj.update_storage()
+		qdel(src)
+
+
+
+/obj/item/weapon/storage/proc/update_storage()
+	if(storage_slots && preserve_slots)
+		if(contents_storage.len > storage_slots)
+			for(var/i = storage_slots+1, i<= contents_storage.len, i)
+				contents_storage -= contents_storage[i]
+		contents.Cut()
+		contents.Add(contents_storage)
+
 
 /obj/item/weapon/storage/Destroy()
 	qdel_null(storage_ui)
@@ -112,7 +154,11 @@
 
 	if(src.loc == W)
 		return 0 //Means the item is already in the storage item
-	if(storage_slots != null && contents.len >= storage_slots)
+	var/empty_slot_count = 0
+	for(var/obj/item/storage_slot/empty in contents)
+		empty_slot_count++
+
+	if(storage_slots != null && (contents.len-empty_slot_count) >= storage_slots)
 		if(!stop_messages)
 			to_chat(user, "<span class='notice'>\The [src] is full, make some space.</span>")
 		return 0 //Storage item is full
@@ -166,7 +212,7 @@
 //This proc handles items being inserted. It does not perform any checks of whether an item can or can't be inserted. That's done by can_be_inserted()
 //The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple items at once,
 //such as when picking up all the items on a tile with one click.
-/obj/item/weapon/storage/proc/handle_item_insertion(var/obj/item/W, var/prevent_warning = 0, var/NoUpdate = 0)
+/obj/item/weapon/storage/proc/handle_item_insertion(var/obj/item/W, var/prevent_warning = 0, var/NoUpdate = 0,var/index=0)
 	if(!istype(W))
 		return 0
 	if(istype(W.loc, /mob))
@@ -174,6 +220,15 @@
 		M.remove_from_mob(W)
 	W.forceMove(src)
 	W.on_enter_storage(src)
+	if(storage_slots && preserve_slots)
+		if(!index)
+			var/type = slot_type
+			if(!type)
+				type = /obj/item/storage_slot
+			index = (locate(type) in contents_storage)
+		contents_storage.Insert(index, W)
+		update_storage()
+
 	if(usr)
 		add_fingerprint(usr)
 
@@ -206,12 +261,26 @@
 
 	storage_ui.on_pre_remove(usr, W)
 
+	var/index = contents_storage.Find(W)
+
 	if(ismob(loc))
 		W.dropped(usr)
 	if(ismob(new_location))
 		W.hud_layerise()
 	else
 		W.reset_plane_and_layer()
+	if(storage_slots && preserve_slots)
+		var/obj/item/storage_slot/slot
+		if(ispath(slot_type))
+			slot = new slot_type()
+		else
+			slot = new /obj/item/storage_slot()
+		slot.parent_obj = src
+		contents_storage.Insert(index, slot)
+		contents_storage -= W
+		world << contents_storage
+		update_storage()
+
 	W.forceMove(new_location)
 
 	if(usr && !NoUpdate)
@@ -323,6 +392,7 @@
 	update_ui_after_item_removal()
 
 /obj/item/weapon/storage/New()
+	set waitfor = 0
 	..()
 	if(allow_quick_empty)
 		verbs += /obj/item/weapon/storage/verb/quick_empty
@@ -358,7 +428,21 @@
 			else
 				for(var/i in 1 to (isnull(data)? 1 : data))
 					new item_path(src)
-		update_icon()
+
+	sleep(2)
+	if(storage_slots && preserve_slots)
+		for(var/i = src.contents.len + 1, i<=storage_slots, i++)
+			var/obj/item/storage_slot/slot
+			if(ispath(slot_type))
+				slot = new slot_type()
+			else
+				slot = new /obj/item/storage_slot()
+			slot.parent_obj = src
+			contents.Add(slot)
+
+	contents_storage = contents.Copy()
+
+	update_icon()
 
 /obj/item/weapon/storage/emp_act(severity)
 	if(!istype(src.loc, /mob/living))
