@@ -2,7 +2,7 @@
 	return (stat == CONSCIOUS)
 
 /mob/living/can_emote(var/emote_type)
-	return (..() && !(silent && emote_type == AUDIBLE_MESSAGE))
+	return (..() && !(silent && emote_type == AUDIBLE_MESSAGE) && !(stunned && emote_type == VISIBLE_MESSAGE) )
 
 /mob/proc/emote(var/act, var/m_type, var/message)
 	// s-s-snowflake

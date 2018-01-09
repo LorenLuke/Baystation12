@@ -612,7 +612,7 @@ proc/is_blind(A)
 	if(L && istype(L))
 		if(L.robotic >= ORGAN_ROBOT)
 			return 0//Robotic hearts don't get jittery.
-	if(src.jitteriness >= 400 && prob(5)) //Kills people if they have high jitters.
+	if(src.jitteriness >= 200 && prob(5)) //Kills people if they have high jitters.
 		if(prob(1))
 			L.take_damage(L.max_damage / 2, 0)
 			to_chat(src, "<span class='danger'>Something explodes in your heart.</span>")
