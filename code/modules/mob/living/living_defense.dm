@@ -10,14 +10,49 @@
 	Returns
 	a blocked amount between 0 - 100, representing the success of the armor check.
 */
+
+/mob/living/proc/run_armor_block(var/def_zone = null, var/attack_flag = "melee", var/armour_pen = 0, var/damage = 0, var/absorb_text = null, var/soften_text = null)
+	if(!def_zone || !attack_flag)
+		return 0
+
+	var/list/obj/item/armor = getarmor_objects(def_zone, attack_flag)
+
+	for(/obj/item/I in armor)
+		if(
+
+	for(/obj/item/I in armor)
+		var/list/armor_entry = I.armor[attack_flag]
+		var/list/health_list = armor_entry[1]
+		var/list/integrity_list = armor_entry[2]
+		var/list/flat_list = armor_entry[3]
+		var/list/perecnt_list = armor_entry[4]
+		var/list/affected_list = armor_entry[5]
+
+
+/mob/living/proc/getarmor_objects(def_zone, attack_flag)
+	if(!def_zone || !attack_flag)
+		return
+
+
+
+
 /mob/living/proc/run_armor_check(var/def_zone = null, var/attack_flag = "melee", var/armour_pen = 0, var/absorb_text = null, var/soften_text = null)
 	if(armour_pen >= 100)
 		return 0 //might as well just skip the processing
 
-	var/armor = getarmor(def_zone, attack_flag)
+	//get armored objects
+	var/list/obj/item/armor = getarmor_objects(def_zone, attack_flag)
+
+	var/
+	for(/obj/item/I in armor)
+		var/armor_entry = I.armor[attack_flag]
+
+		var/healt_list = I
 
 	if(armour_pen >= armor)
 		return 0 //effective_armor is going to be 0, fullblock is going to be 0, blocked is going to 0, let's save ourselves the trouble
+
+
 
 	var/effective_armor = (armor - armour_pen)/100
 	var/fullblock = (effective_armor*effective_armor) * ARMOR_BLOCK_CHANCE_MULT
