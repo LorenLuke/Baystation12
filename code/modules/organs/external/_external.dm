@@ -17,12 +17,9 @@
 	// Damage vars.
 	var/brute_mod = 1                  // Multiplier for incoming brute damage.
 	var/burn_mod = 1                   // As above for burn.
-	var/brute_dam = 0                  // Actual current brute damage.
 	var/brute_ratio = 0                // Ratio of current brute damage to max damage.
-	var/burn_dam = 0                   // Actual current burn damage.
 	var/burn_ratio = 0                 // Ratio of current burn damage to max damage.
 	var/last_dam = -1                  // used in healing/processing calculations.
-	var/pain = 0                       // How much the limb hurts.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
 	// Appearance vars.
@@ -42,12 +39,10 @@
 	var/list/markings = list()         // Markings (body_markings) to apply to the icon
 
 	// Wound and structural data.
-	var/wound_update_accuracy = 1      // how often wounds should be updated, a higher number means less often
-	var/list/wounds = list()           // wound datum list.
-	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
 	var/obj/item/organ/external/parent // Master-limb.
 	var/list/children                  // Sub-limbs.
 	var/list/internal_organs = list()  // Internal organs of this body part
+	var/list/datum/bone/bones = list() // Bones in the limb
 	var/sabotaged = 0                  // If a prosthetic limb is emagged, it will detonate when it fails.
 	var/list/implants = list()         // Currently implanted objects.
 	var/base_miss_chance = 20          // Chance of missing.
@@ -83,6 +78,9 @@
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
+	oxy_need = 0
+	tox_gen = 0
+
 /obj/item/organ/external/New(var/mob/living/carbon/holder)
 	..()
 	if(isnull(pain_disability_threshold))
@@ -109,6 +107,10 @@
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+
+	if(bones)
+		for(var/datum/bone/B in bones)
+			qdel(B)
 
 	applied_pressure = null
 	if(splinted && splinted.loc == src)
@@ -263,7 +265,8 @@
 
 	dislocated = 0
 	if(owner)
-		owner.shock_stage += 20
+		owner.shock_stage += 5 //undislocating 7 limbs shouldn't stop a heart
+		pain += 20
 
 		//check to see if we still need the verb
 		for(var/obj/item/organ/external/limb in owner.organs)
@@ -413,72 +416,6 @@ This function completely restores a damaged organ to perfect condition.
 		I.remove_rejuv()
 	..()
 
-/obj/item/organ/external/proc/createwound(var/type = CUT, var/damage, var/surgical)
-
-	if(damage == 0)
-		return
-
-	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
-	//Brute damage can possibly trigger an internal wound, too.
-	var/local_damage = brute_dam + burn_dam + damage
-	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > 30)
-
-		var/internal_damage
-		if(prob(damage) && sever_artery())
-			internal_damage = TRUE
-		if(prob(ceil(damage/4)) && sever_tendon())
-			internal_damage = TRUE
-		if(internal_damage)
-			owner.custom_pain("You feel something rip in your [name]!", 50, affecting = src)
-
-	//Burn damage can cause fluid loss due to blistering and cook-off
-	if((type in list(BURN, LASER)) && (damage > 5 || damage + burn_dam >= 15) && (robotic < ORGAN_ROBOT))
-		var/fluid_loss_severity
-		switch(type)
-			if(BURN)  fluid_loss_severity = FLUIDLOSS_WIDE_BURN
-			if(LASER) fluid_loss_severity = FLUIDLOSS_CONC_BURN
-		var/fluid_loss = (damage/(owner.maxHealth - config.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
-		owner.remove_blood(fluid_loss)
-
-	// first check whether we can widen an existing wound
-	if(!surgical && wounds && wounds.len > 0 && prob(max(50+(number_wounds-1)*10,90)))
-		if((type == CUT || type == BRUISE) && damage >= 5)
-			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
-			var/list/compatible_wounds = list()
-			for (var/datum/wound/W in wounds)
-				if (W.can_worsen(type, damage))
-					compatible_wounds += W
-
-			if(compatible_wounds.len)
-				var/datum/wound/W = pick(compatible_wounds)
-				W.open_wound(damage)
-				if(prob(25))
-					if(robotic >= ORGAN_ROBOT)
-						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
-						"<span class='danger'>The damage to your [name] worsens.</span>",\
-						"<span class='danger'>You hear the screech of abused metal.</span>")
-					else
-						owner.visible_message("<span class='danger'>The wound on [owner.name]'s [name] widens with a nasty ripping noise.</span>",\
-						"<span class='danger'>The wound on your [name] widens with a nasty ripping noise.</span>",\
-						"<span class='danger'>You hear a nasty ripping noise, as if flesh is being torn apart.</span>")
-				return W
-
-	//Creating wound
-	var/wound_type = get_wound_type(type, damage)
-
-	if(wound_type)
-		var/datum/wound/W = new wound_type(damage)
-
-		//Check whether we can add the wound to an existing wound
-		if(surgical)
-			W.autoheal_cutoff = 0
-		else
-			for(var/datum/wound/other in wounds)
-				if(other.can_merge(W))
-					other.merge_wound(W)
-					return
-		wounds += W
-		return W
 
 /****************************************************
 			   PROCESSING & UPDATING
@@ -1330,7 +1267,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		badness += "jaundiced"
 	if(owner.get_blood_oxygenation() <= 50)
 		badness += "turning blue"
-	if(owner.get_blood_circulation() <= 60)
+	if(owner.get_blood_circulation() <= 65)
 		badness += "very pale"
 	if(status & ORGAN_DEAD)
 		badness += "rotting"

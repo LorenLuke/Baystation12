@@ -21,7 +21,7 @@ mob/living/carbon/proc/custom_pain(var/message, var/power, var/force, var/obj/it
 			affecting.add_pain(ceil(power/2))
 		else
 			adjustHalLoss(ceil(power/2))
-	
+
 	flash_pain(min(round(2*power)+55, 255))
 
 	// Anti message spam checks
@@ -48,7 +48,7 @@ mob/living/carbon/human/proc/handle_pain()
 	var/obj/item/organ/external/damaged_organ = null
 	for(var/obj/item/organ/external/E in organs)
 		if(!E.can_feel_pain()) continue
-		var/dam = E.get_damage()
+		var/dam = E.get_total_damage()
 		// make the choice of the organ depend on damage,
 		// but also sometimes use one of the less damaged ones
 		if(dam > maxdam && (maxdam == 0 || prob(70)) )
@@ -66,12 +66,12 @@ mob/living/carbon/human/proc/handle_pain()
 				msg =  "Your [damaged_organ.name] [burning ? "burns" : "hurts"]."
 			if(11 to 90)
 				msg = "Your [damaged_organ.name] [burning ? "burns" : "hurts"] badly!"
-			if(91 to 10000)
+			if(91 to INFINITY)
 				msg = "OH GOD! Your [damaged_organ.name] is [burning ? "on fire" : "hurting terribly"]!"
 		custom_pain(msg, maxdam, prob(10), damaged_organ, TRUE)
 	// Damage to internal organs hurts a lot.
 	for(var/obj/item/organ/internal/I in internal_organs)
-		if(prob(1) && !((I.status & ORGAN_DEAD) || I.robotic >= ORGAN_ROBOT) && I.damage > 5)
+		if(prob(1) && !((I.status & ORGAN_DEAD) || I.robotic >= ORGAN_ROBOT) && I.get_total_damage() > 5)
 			var/obj/item/organ/external/parent = get_organ(I.parent_organ)
 			var/pain = 10
 			var/message = "You feel a dull pain in your [parent.name]"
@@ -84,15 +84,25 @@ mob/living/carbon/human/proc/handle_pain()
 			src.custom_pain(message, pain, affecting = parent)
 
 
-	if(prob(1))
+	if(prob(3))
 		switch(getToxLoss())
-			if(5 to 17)
+			if(5 to 13)
 				custom_pain("Your body stings slightly.", getToxLoss())
-			if(17 to 35)
+			if(13 to 28)
 				custom_pain("Your body stings.", getToxLoss())
-			if(35 to 60)
+			if(28 to 48)
 				custom_pain("Your body stings strongly.", getToxLoss())
-			if(60 to 100)
+			if(48 to 80)
 				custom_pain("Your whole body hurts badly.", getToxLoss())
-			if(100 to INFINITY)
+			if(80 to INFINITY)
 				custom_pain("Your body aches all over, it's driving you mad.", getToxLoss())
+
+/mob/living/carbon/human/proc/get_total_pain()
+	var/list/organ_list = list(organs) + list(organs_internal)
+	var/pain_total = 0
+	for(var/obj/item/organ/O in organ_list)
+		pain_total += O.pain
+
+	pain_total *= min(1,1-(shock_stage/120)))
+	pain_total -= chem_effects[CE_PAINKILLER]/2
+	return max(0, pain_total)

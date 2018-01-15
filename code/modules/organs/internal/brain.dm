@@ -153,14 +153,6 @@
 				owner.visible_message("<span class='danger'>\The [owner] starts having a seizure!</span>")
 				owner.Paralyse(10)
 				owner.make_jittery(1000)
-			else if((owner.disabilities & TOURETTES) && prob(10))
-				owner.Stun(10)
-				switch(rand(1, 3))
-					if(1)
-						owner.emote("twitch")
-					if(2 to 3)
-						owner.say("[prob(50) ? ";" : ""][pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER", "TITS")]")
-				owner.make_jittery(100)
 			else if((owner.disabilities & NERVOUS) && prob(10))
 				owner.stuttering = max(10, owner.stuttering)
 
@@ -182,7 +174,7 @@
 		if(owner.should_have_organ(BP_HEART))
 
 			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
-			var/blood_volume = owner.get_blood_oxygenation()
+			var/blood_volume = owner.get_effective_blood_oxygenation()
 
 			if(owner.is_asystole()) // Heart is missing or isn't beating and we're not breathing (hardcrit)
 				owner.Paralyse(3)
@@ -213,12 +205,17 @@
 					damprob = owner.chem_effects[CE_STABLE] ? 60 : 100
 					if(!past_damage_threshold(6) && prob(damprob))
 						take_damage(1)
-					if(!owner.paralysis && prob(15))
-						owner.Paralyse(3,5)
-						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
+					if(!owner.paralysis)
+						if(prob(5)
+							owner.visible_message("<span class='notice'>[owner] passes out!</span>")
+							to_chat(owner, "<span class='danger'>You black out!</span>")
+							owner.Paralyse(3)
+					else
+						owner.Paralyse(3)
 				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 80 : 100
 					if(prob(damprob))
 						take_damage(1)
+					owner.Paralyse(2)
 	..()

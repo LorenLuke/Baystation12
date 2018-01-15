@@ -9,6 +9,17 @@
 	var/list/datum/language/assists_languages = list()
 	var/min_bruised_damage = 10       // Damage before considered bruised
 
+
+
+
+
+
+
+
+
+
+
+
 /obj/item/organ/internal/New(var/mob/living/carbon/holder)
 	if(max_damage)
 		min_bruised_damage = Floor(max_damage / 4)

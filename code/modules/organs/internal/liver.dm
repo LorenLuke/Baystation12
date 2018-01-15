@@ -10,6 +10,11 @@
 	max_damage = 70
 	relative_size = 60
 
+	var/min_filtered = 5
+	var/buildup = 0
+	var/max_buildup = 50
+	var/clear_rate = 2
+
 /obj/item/organ/internal/liver/robotize()
 	. = ..()
 	icon_state = "liver-prosthetic"

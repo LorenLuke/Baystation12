@@ -20,13 +20,30 @@ var/list/organ_cache = list()
 	var/datum/dna/dna                 // Original DNA.
 	var/datum/species/species         // Original species.
 
+	// Wounds
+	var/wound_update_accuracy = 1      // how often wounds should be updated, a higher number means less often
+	var/list/wounds = list()           // wound datum list.
+	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
+
+
 	// Damage vars.
-	var/damage = 0                    // Current damage to the organ
+	var/damage = 0
+	var/brute_dam = 0                    // Current damage to the organ
+	var/burn_dam = 0
+	var/brute_unfix = 0          // Cannot be repaired, due to just flat out death/catastrophic damage
+	var/burn_unfix = 0
 	var/min_broken_damage = 30     	  // Damage before becoming broken
-	var/max_damage                    // Damage cap
+	var/max_damage                    // Damage cap //Does this even do anything, anymore? -Luke
+
+	// Pain vars
+	var/pain = 0                      // How much the organ hurts.
+
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+
+	var/oxy_need = 0.05
+	var/tox_gen = 0.25
 
 /obj/item/organ/Destroy()
 
@@ -39,16 +56,26 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/update_health()
 	return
 
+/obj/item/organ/proc/get_damage()
+	return list(brute_dam + brute_unfix, burn_dam + burn_unfix)
+
+/obj/item/organ/proc/get_total_damage()
+	var/list/dam = get_damage()
+	return (dam[1] + dam[2])
+
+
 /obj/item/organ/proc/is_broken()
-	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
+	return (get_total_damage() >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
+
 
 /obj/item/organ/New(var/mob/living/carbon/holder)
 	..(holder)
 
-	if(max_damage)
-		min_broken_damage = Floor(max_damage / 2)
+	if(!max_damage && min_broken_damage)
+		max_damage = floor(min_broken_damage * 2
 	else
-		max_damage = min_broken_damage * 2
+		if(!min_broken_damage)
+			min_broken_damage = floor(max_damage / 2)
 
 	if(istype(holder))
 		owner = holder
@@ -126,6 +153,10 @@ var/list/organ_cache = list()
 	//check if we've hit max_damage
 	if(damage >= max_damage)
 		die()
+
+	else if(owner && reagents)
+		owner.adjustOxyLoss(oxy_need)
+		owner.adjustToxLoss(tox_gen)
 
 /obj/item/organ/proc/is_preserved()
 	if(istype(loc,/obj/item/organ))
@@ -225,12 +256,17 @@ var/list/organ_cache = list()
 		germ_level -= 2 //at germ_level == 1000, this will cure the infection in 5 minutes
 
 //Note: external organs have their own version of this proc
-/obj/item/organ/proc/take_damage(amount, var/silent=0)
-	damage = between(0, damage + round(amount, 0.1), max_damage)
+/obj/item/organ/proc/take_damage(var/brute, var/burn, var/brute_unfixable, var/burn_unfixable, var/silent=0)
+	brute_dam += round(brute, 0.1)
+	burn_dam += round(burn, 0.1)
+	brute_unfix += round(brute_unfixable, 0.1)
+	burn_unfix += round(burn_unfixable, 0.1)
 
-/obj/item/organ/proc/heal_damage(amount)
-	damage = between(0, damage - round(amount, 0.1), max_damage)
-
+/obj/item/organ/proc/heal_damage(var/brute, var/burn, var/brute_unfixable, var/burn_unfixable)
+	brute_dam -= round(brute, 0.1)
+	burn_dam -= round(burn, 0.1)
+	brute_unfix -= round(brute_unfixable, 0.1)
+	burn_unfix -= round(burn_unfixable, 0.1)
 
 /obj/item/organ/proc/robotize() //Being used to make robutt hearts, etc
 	robotic = ORGAN_ROBOT
@@ -246,11 +282,11 @@ var/list/organ_cache = list()
 		return
 	switch (severity)
 		if (1)
-			take_damage(9)
+			take_damage(1,7,0,1)
 		if (2)
-			take_damage(3)
+			take_damage(0,3)
 		if (3)
-			take_damage(1)
+			take_damage(0,1)
 
 /**
  *  Remove an organ

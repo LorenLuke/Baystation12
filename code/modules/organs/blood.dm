@@ -266,23 +266,26 @@ proc/blood_splatter(var/target,var/datum/reagent/blood/source,var/large,var/spra
 /mob/living/carbon/human/proc/get_blood_volume()
 	return round((vessel.get_reagent_amount(/datum/reagent/blood)/species.blood_volume)*100)
 
-//Percentage of maximum blood volume, affected by the condition of circulation organs
+/mob/living/carbon/human/proc/get_blood_pressure()
+	return list(systolic, diastolic)
+
+//Circulation efficiency, affected by the condition of circulation organs
 /mob/living/carbon/human/proc/get_blood_circulation()
 	var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
-	var/blood_volume = get_blood_volume()
-	if(!heart || (heart.pulse == PULSE_NONE && !(status_flags & FAKEDEATH) && heart.robotic < ORGAN_ROBOT))
-		blood_volume *= 0.25
-	else
-		var/pulse_mod = 1
-		switch(heart.pulse)
-			if(PULSE_SLOW)
-				pulse_mod *= 0.9
-			if(PULSE_FAST)
-				pulse_mod *= 1.1
-			if(PULSE_2FAST, PULSE_THREADY)
-				pulse_mod *= 1.25
-		blood_volume *= max(0.3, (1-(heart.damage / heart.max_damage))) * pulse_mod
-	return min(blood_volume, 100)
+	var/blood_volume_percent = get_blood_volume()
+	var/list/blood_pressure = get_blood_pressure()
+	var/systolic = blood_pressure[1]
+	var/diastolic = blood_pressure[2]
+
+	var/damage_mod = sqrt(heart.get_damage()/heart.max_damage)
+
+	var/pump_scalar = min(1.2, ((systolic/100) + (diastolic/65))/2 )
+	var/pulse_scalar = heart.pulse_actual/70
+	if(heart.robotic >= ORGAN_ROBOT)
+		pulse_scalar = 1
+	var/circ_eff = blood_volume_percent * pump_scalar * pulse_scalar * (1-(damage_mod*0.8))
+
+	return min(100, circ_eff)
 
 //Whether the species needs blood to carry oxygen. Used in get_blood_oxygenation and may be expanded based on blood rather than species in the future.
 /mob/living/carbon/human/proc/blood_carries_oxygen()
@@ -301,12 +304,15 @@ proc/blood_splatter(var/target,var/datum/reagent/blood/source,var/large,var/spra
 	if(!blood_carries_oxygen())
 		blood_volume = 100
 
-	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/oxyloss_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
 	var/oxygenated_mult = 0
 	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
 		oxygenated_mult = 0.5
 	else if(chem_effects[CE_OXYGENATED] >= 2) // Dexplus.
 		oxygenated_mult = 0.8
-	blood_volume_mod = blood_volume_mod + oxygenated_mult - (blood_volume_mod * oxygenated_mult)
-	blood_volume = blood_volume * blood_volume_mod
-	return min(blood_volume, 100)
+	oxygenated_product = oxyloss_mod + oxygenated_mult - (oxyloss-mod * oxygenated_mult)
+	oxygenation = blood_volume * oxygenated_product
+	return min(100, oxygenation)
+
+/mob/living/carbon/human/proc/get_effective_blood_oxygenation()
+	return (get_blood_oxygenation() * get_blood_volume())
