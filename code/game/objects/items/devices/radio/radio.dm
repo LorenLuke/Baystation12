@@ -264,6 +264,9 @@
 		the signal gets processed and logged, and an audible transmission gets sent
 		to each individual headset.
 	*/
+	for(var/obj/item/device/radio_jammer/R in radio_jamming_sources)
+		if(R.active && get_dist(get_turf(R), get_turf(src)) <= R.range)
+			return 0
 
 	//#### Grab the connection datum ####//
 	var/datum/radio_frequency/connection = handle_message_mode(M, message, channel)
