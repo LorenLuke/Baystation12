@@ -4,7 +4,7 @@
 		if(ui)
 			ui.close()
 		return 0
-	if(!apc_power(0) && !battery_power(0))
+	if(!handle_power(1))
 		if(ui)
 			ui.close()
 		return 0
@@ -120,7 +120,7 @@
 		data["PC_batterypercent"] = "N/C"
 		data["PC_showbatteryicon"] = battery_module ? 1 : 0
 
-	if(tesla_link && tesla_link.enabled && apc_powered)
+	if(tesla_link && tesla_link.enabled && handle_power(1) == 2)
 		data["PC_apclinkicon"] = "charging.gif"
 
 	if(network_card && network_card.is_banned())

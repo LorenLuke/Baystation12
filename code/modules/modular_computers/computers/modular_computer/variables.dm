@@ -13,7 +13,7 @@
 	var/last_world_time = "00:00"
 	var/list/last_header_icons
 	var/computer_emagged = FALSE							// Whether the computer is emagged.
-	var/apc_powered = FALSE									// Set automatically. Whether the computer used APC power last tick.
+	var/powered = TRUE										// Set automatically. Whether the computer has adequate power.
 	var/base_active_power_usage = 50						// Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
 	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
@@ -49,7 +49,7 @@
 	var/obj/item/weapon/computer_hardware/battery_module/battery_module				// An internal power source for this computer. Can be recharged.
 	var/obj/item/weapon/computer_hardware/card_slot/card_slot						// ID Card slot component of this computer. Mostly for HoP modification console that needs ID slot for modification.
 	var/obj/item/weapon/computer_hardware/nano_printer/nano_printer					// Nano Printer component of this computer, for your everyday paperwork needs.
-	var/obj/item/weapon/computer_hardware/hard_drive/portable/portable_drive		// Portable data storage
+	var/obj/item/weapon/computer_hardware/portable/usb_slot							// portable device
 	var/obj/item/weapon/computer_hardware/ai_slot/ai_slot							// AI slot, an intellicard housing that allows modifications of AIs.
 	var/obj/item/weapon/computer_hardware/tesla_link/tesla_link						// Tesla Link, Allows remote charging from nearest APC.
 

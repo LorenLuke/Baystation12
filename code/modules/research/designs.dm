@@ -1159,30 +1159,50 @@ other types of metals and chemistry for reagents).
 	id = "portadrive_basic"
 	req_tech = list(TECH_DATA = 1)
 	build_type = IMPRINTER
+	materials = list("glass" = 400)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/basic
+	sort_string = "VBACA"
+
+/datum/design/item/modularcomponent/portabledrive/advanced
+	name = "standard data crystal"
+	id = "portadrive"
+	req_tech = list(TECH_DATA = 1)
+	build_type = IMPRINTER
 	materials = list("glass" = 800)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable
-	sort_string = "VBACA"
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/
+	sort_string = "VBACB"
 
 /datum/design/item/modularcomponent/portabledrive/advanced
 	name = "advanced data crystal"
 	id = "portadrive_advanced"
 	req_tech = list(TECH_DATA = 2)
 	build_type = IMPRINTER
-	materials = list("glass" = 1600)
+	materials = list("glass" = 3200)
 	chemicals = list(/datum/reagent/acid = 20)
 	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/advanced
-	sort_string = "VBACB"
+	sort_string = "VBACC"
 
 /datum/design/item/modularcomponent/portabledrive/super
 	name = "super data crystal"
 	id = "portadrive_super"
 	req_tech = list(TECH_DATA = 4)
 	build_type = IMPRINTER
-	materials = list("glass" = 3200)
+	materials = list("glass" = 6400)
 	chemicals = list(/datum/reagent/acid = 20)
 	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/super
-	sort_string = "VBACC"
+	sort_string = "VBACD"
+
+/datum/design/item/modularcomponent/portabledrive/ultra
+	name = "ultra data crystal"
+	id = "portadrive_ultra"
+	req_tech = list(TECH_DATA = 5)
+	build_type = IMPRINTER
+	materials = list("glass" = 12800)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/ultra
+	sort_string = "VBACE"
 
 // Card slot
 /datum/design/item/modularcomponent/accessory/AssembleDesignName()

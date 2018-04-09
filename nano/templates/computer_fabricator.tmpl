@@ -5,6 +5,7 @@
 	<h2>Step 1: Select your device type</h2>
 	{{:helper.link('Laptop', 'calc', { "pick_device" : 1 })}}
 	{{:helper.link('Tablet', 'calc', { "pick_device" : 2 })}}
+	{{:helper.link('USB', 'calc', { "pick_device" : 3 })}}
 </div>
 {{else data.state == 1}}
 <div class='item'>
@@ -14,6 +15,7 @@
 			<td><b>Current Price:</b>
 			<td>{{:data.totalprice}}T
 		<tr>
+                {{if data.devtype != 3}} <!-- No Data Crystals -->
 			<td><b>Battery:</b>
 			<td>{{:helper.link('Standard', null, { "hw_battery" : 1 }, data.hw_battery == 1 ? 'selected' : null)}}
 			<td>{{:helper.link('Upgraded', null, { "hw_battery" : 2 }, data.hw_battery == 2 ? 'selected' : null)}}
@@ -53,16 +55,36 @@
 		<tr>
 			<td><b>Confirm Order:</b>
 			<td>{{:helper.link('CONFIRM', null, { "confirm_order" : 1 })}}
-	</table>
-	<hr>
-	<b>Battery</b> allows your device to operate without external utility power source. Advanced batteries increase battery life.<br>
-	<b>Hard Drive</b> stores file on your device. Advanced drives can store more files, but use more power, shortening battery life.<br>
-	<b>Network Card</b> allows your device to wirelessly connect to the local NTNet network. Basic cards are limited to on-station use, while advanced cards can operate anywhere near the uplink, which includes the asteroid outposts. Advanced cards also tend to have better bandwidth.<br>
-	<b>Processor Unit</b> is critical for your device's functionality. It allows you to run programs from your hard drive. Advanced CPUs use more power, but allow you to run more programs on background at once.<br>
-	<b>Tesla Relay</b> is an advanced wireless power relay that allows your device to connect to nearby area power controller to provide alternative power source.<br>
-	<b>Nano Printer</b> is device that allows printing of various documents. This device was certified EcoFriendlyPlus and is capable of recycling existing paper for printing purposes.<br>
-	<b>Card Reader</b> adds a slot that allows you to manipulate RFID cards. Please note that this is not necessary to allow the device to read your identification, it is just necessary to manipulate other cards.<br>
-	<b>Intellicard Slot</b> is a specialised high powered hardware that can hold an intellicard with active AI personality. It is required for some specialised programs to run properly.<br>
+
+		</table>
+		<hr>
+		<b>Battery</b> allows your device to operate without external utility power source. Advanced batteries increase battery life.<br>
+		<b>Hard Drive</b> stores file on your device. Advanced drives can store more files, but use more power, shortening battery life.<br>
+		<b>Network Card</b> allows your device to wirelessly connect to the local NTNet network. Basic cards are limited to on-station use, while advanced cards can operate anywhere near the uplink, which includes the asteroid outposts. Advanced cards also tend to have better bandwidth.<br>
+		<b>Processor Unit</b> is critical for your device's functionality. It allows you to run programs from your hard drive. Advanced CPUs use more power, but allow you to run more programs on background at once.<br>
+		<b>Tesla Relay</b> is an advanced wireless power relay that allows your device to connect to nearby area power controller to provide alternative power source.<br>
+		<b>Nano Printer</b> is device that allows printing of various documents. This device was certified EcoFriendlyPlus and is capable of recycling existing paper for printing purposes.<br>
+		<b>Card Reader</b> adds a slot that allows you to manipulate RFID cards. Please note that this is not necessary to allow the device to read your identification, it is just necessary to manipulate other cards.<br>
+		<b>Intellicard Slot</b> is a specialised high powered hardware that can hold an intellicard with active AI personality. It is required for some specialised programs to run properly.<br>
+		{{/if}}
+
+		{{if data.devtype == 3}} <!-- Data Crystals -->
+			<td><b>Portable Storage:</b>
+			<td>{{:helper.link('Basic', null, { "hw_usb" : 1 }, data.hw_usb == 1 ? 'selected' : null)}}
+			<td>{{:helper.link('Standard', null, { "hw_usb" : 2 }, data.hw_usb == 2 ? 'selected' : null)}}
+			<td>{{:helper.link('Advanced', null, { "hw_usb" : 3 }, data.hw_usb == 3 ? 'selected' : null)}}
+		<tr>
+			<td><b>Portable Battery:</b>
+			<td>{{:helper.link('Basic', null, { "hw_usb" : 4 }, data.hw_usb == 4 ? 'selected' : null)}}
+			<td>{{:helper.link('Standard', null, { "hw_usb" : 5 }, data.hw_usb == 5 ? 'selected' : null)}}
+			<td>{{:helper.link('Advanced', null, { "hw_usb" : 6 }, data.hw_usb == 6 ? 'selected' : null)}}
+		<tr>
+			<td><b>Confirm Order:</b>
+			<td>{{:helper.link('CONFIRM', null, { "confirm_order" : 1 })}}
+
+		</table>
+		{{/if}}
+
 </div>
 {{else data.state == 2}}
 	<h2>Step 3: Payment</h2>

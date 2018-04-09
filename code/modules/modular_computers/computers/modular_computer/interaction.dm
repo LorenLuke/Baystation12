@@ -2,8 +2,9 @@
 	verbs.Cut()
 	if(ai_slot)
 		verbs |= /obj/item/modular_computer/verb/eject_ai
-	if(portable_drive)
-		verbs |= /obj/item/modular_computer/verb/eject_usb
+
+	if(usb_slot)
+		verbs |= /obj/item/modular_computer/verb/eject_portable
 	if(card_slot && card_slot.stored_card)
 		verbs |= /obj/item/modular_computer/verb/eject_id
 	if(stores_pen && istype(stored_pen))
@@ -52,8 +53,9 @@
 	proc_eject_id(usr)
 
 // Eject ID card from computer, if it has ID slot with card inside.
-/obj/item/modular_computer/verb/eject_usb()
-	set name = "Eject Portable Storage"
+
+/obj/item/modular_computer/verb/eject_portable()
+	set name = "Eject Portable device"
 	set category = "Object"
 	set src in view(1)
 
@@ -65,7 +67,8 @@
 		to_chat(usr, "<span class='warning'>You can't reach it.</span>")
 		return
 
-	proc_eject_usb(usr)
+
+	proc_eject_portable(usr)
 
 /obj/item/modular_computer/verb/eject_ai()
 	set name = "Eject AI"
@@ -121,23 +124,33 @@
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.event_idremoved(1)
 
-	card_slot.stored_card.forceMove(get_turf(src))
+	if(ishuman(user) && !user.get_active_hand())
+		user.put_in_hands(card_slot.stored_card)
+	else
+		card_slot.stored_card.forceMove(get_turf(src))
 	if(!issilicon(user))
 		user.put_in_hands(card_slot.stored_card)
 	to_chat(user, "You remove [card_slot.stored_card] from [src].")
 	card_slot.stored_card = null
 	update_uis()
+
 	update_verbs()
 
-/obj/item/modular_computer/proc/proc_eject_usb(mob/user)
+/obj/item/modular_computer/proc/proc_eject_portable(mob/user)
 	if(!user)
 		user = usr
 
-	if(!portable_drive)
+	if(!usb_slot)
 		to_chat(user, "There is no portable device connected to \the [src].")
 		return
 
-	uninstall_component(user, portable_drive)
+	var/obj/PD = usb_slot
+	uninstall_component(user, usb_slot)
+	if(ishuman(user) && !user.get_active_hand())
+		user.put_in_hands(PD)
+	else
+		PD.forceMove(get_turf(src))
+
 	update_uis()
 
 /obj/item/modular_computer/proc/proc_eject_ai(mob/user)
@@ -180,11 +193,9 @@
 	if(istype(W, /obj/item/weapon/card/id)) // ID Card, try to insert it.
 		var/obj/item/weapon/card/id/I = W
 		if(!card_slot)
-			to_chat(user, "You try to insert [I] into [src], but it does not have an ID card slot installed.")
 			return
 
 		if(card_slot.stored_card)
-			to_chat(user, "You try to insert [I] into [src], but its ID card slot is occupied.")
 			return
 
 		user.drop_from_inventory(I)
@@ -193,8 +204,7 @@
 		update_uis()
 		update_verbs()
 		update_name()
-		to_chat(user, "You insert [I] into [src].")
-
+		to_chat(user, "You insert \the [I] into \the [src].")
 		return
 	if(istype(W, /obj/item/weapon/pen) && stores_pen)
 		if(istype(stored_pen))

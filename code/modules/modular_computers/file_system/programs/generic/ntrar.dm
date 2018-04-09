@@ -1,25 +1,35 @@
-/datum/computer_file/program/filemanager
-	filename = "filemanager"
-	filedesc = "NTOS File Manager"
-	extended_desc = "This program allows management of files."
-	program_icon_state = "generic"
-	program_key_state = "generic_key"
-	program_menu_icon = "folder-collapsed"
-	size = 8
+/datum/computer_file/program/ntrar
+	filename = "ntrar"
+	filedesc = "NanoRAR"
+	extended_desc = "This program allows the packing and unpacking of .ntrar files."
+	program_icon_state = "word"
+	size = 4
 	requires_ntnet = 0
-	available_on_ntnet = 0
-	undeletable = 1
-	nanomodule_path = /datum/nano_module/program/computer_filemanager/
-	var/open_file
-	var/error
-	usage_flags = PROGRAM_ALL
+	available_on_ntnet = 1
+	nanomodule_path = /datum/nano_module/program/ntrar/
+	var/list/selected_files = list()
 
 /datum/computer_file/program/filemanager/Topic(href, href_list)
 	if(..())
 		return 1
 
-	if(href_list["PRG_openfile"])
+	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
+	if(!HDD)
+		return 1
+
+	if(href_list["PRG_selectfile"])
 		. = 1
+		var/datum/computer_file/data/F = HDD.find_file_by_name(href_list["PRG_selectfile"])
+
+	if(href_list["PRG_rar"])
+		. = 1
+	if(href_list["PRG_unrar"])
+		. = 1
+
+
+
+
+
 		open_file = href_list["PRG_openfile"]
 	if(href_list["PRG_newtextfile"])
 		. = 1

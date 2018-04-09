@@ -9,6 +9,7 @@
 	origin_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	var/battery_rating = 75
 	var/obj/item/weapon/cell/battery = null
+	var/max_load
 
 /obj/item/weapon/computer_hardware/battery_module/advanced
 	name = "advanced battery"
@@ -55,6 +56,10 @@
 	icon_state = "battery_lambda"
 	hardware_size = 1
 	battery_rating = 3000
+
+/obj/item/weapon/computer_hardware/battery_module/New()
+	..()
+	max_load = battery_rating/20
 
 /obj/item/weapon/computer_hardware/battery_module/lambda/New()
 	..()

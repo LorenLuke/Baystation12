@@ -38,16 +38,72 @@
 
 	var/list/hardware = movable.get_all_components()
 
-	data["disk_size"] = movable.hard_drive.max_capacity
-	data["disk_used"] = movable.hard_drive.used_capacity
-	data["power_usage"] = movable.last_power_usage
+	data["processor_exists"] = movable.processor_unit ? 1 : 0
+	data["networkcard_exists"] = movable.network_card ? 1 : 0
+	data["harddisk_exists"] = movable.hard_drive ? 1 : 0
 	data["battery_exists"] = movable.battery_module ? 1 : 0
+	data["usb_exists"] = movable.usb_slot ? 1 : 0
+
+	if(movable.processor_unit)
+		data["processor_name"] = movable.processor_unit.name
+		data["processor_desc"] = movable.processor_unit.desc
+		data["processor_running"] = movable.idle_threads.len + 1
+		data["processor_maxrunning"] = movable.processor_unit.max_idle_programs + 1
+		data["processor_power"] = movable.processor_unit.power_usage
+
+	if(movable.network_card)
+		data["networkcard_name"] = movable.network_card.name
+		data["networkcard_desc"] = movable.network_card.desc
+		data["networkcard_signal"] = movable.network_card.get_signal()
+		data["networkcard_wired"] = movable.network_card.ethernet
+		data["networkcard_enabled"] = movable.network_card.enabled
+		data["networkcard_power"] = movable.network_card.power_usage
+
+
+	if(movable.hard_drive)
+		data["harddisk_name"] = movable.hard_drive.name
+		data["harddisk_desc"] = movable.hard_drive.desc
+		data["harddisk_size"] = movable.hard_drive.max_capacity
+		data["harddisk_used"] = movable.hard_drive.used_capacity
+		data["harddisk_power"] = movable.hard_drive.power_usage
+
+	if(movable.usb_slot)
+		data["usb_name"] = movable.usb_slot.name
+		data["usb_desc"] = movable.usb_slot.desc
+		data["usb_type"] = movable.usb_slot.usb_type
+		data["usb_active"] = movable.usb_slot.enabled
+		switch (movable.usb_slot.type)
+
+			if(1) // Hard disk
+				var/obj/item/weapon/computer_hardware/hard_drive/USB = movable.usb_slot.internal_device
+				data["usb_upper"] = USB.max_capacity
+				data["usb_current"] = USB.used_capacity
+				data["usb_power"] = USB.power_usage
+
+			if(2) // battery
+				var/obj/item/weapon/computer_hardware/battery_module/USB = movable.usb_slot.internal_device
+				data["usb_upper"] = USB.battery_rating
+				data["usb_current"] = USB.battery.charge
+				data["usb_percent"] = USB.battery.percent()
+				data["usb_power"] = USB.power_usage
+				data["usb_enabled"] = USB.enabled
+
+			//if(3) // network card
+
+
 	if(movable.battery_module)
+		data["battery_name"] = movable.battery_module.name
+		data["battery_desc"] = movable.battery_module.desc
 		data["battery_rating"] = movable.battery_module.battery.maxcharge
 		data["battery_percent"] = round(movable.battery_module.battery.percent())
 
+	data["power_usage"] = movable.last_power_usage
+
+
 	var/list/all_entries[0]
 	for(var/obj/item/weapon/computer_hardware/H in hardware)
+		if(H in list(movable.processor_unit, movable.network_card, movable.hard_drive, movable.battery_module, movable.usb_slot))
+			continue
 		all_entries.Add(list(list(
 		"name" = H.name,
 		"desc" = H.desc,

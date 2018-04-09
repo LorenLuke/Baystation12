@@ -12,6 +12,7 @@
 	// The actual laptop/tablet
 	var/obj/item/modular_computer/laptop/fabricated_laptop = null
 	var/obj/item/modular_computer/tablet/fabricated_tablet = null
+	var/obj/item/weapon/computer_hardware/hard_drive/portable/fabricated_usb = null
 
 	// Utility vars
 	var/state = 0 							// 0: Select device type, 1: Select loadout, 2: Payment, 3: Thankyou screen
@@ -27,6 +28,7 @@
 	var/dev_nanoprint = 0					// 0: None, 1: Standard
 	var/dev_card = 0						// 0: None, 1: Standard
 	var/dev_aislot = 0						// 0: None, 1: Standard
+	var/dev_usb = 0							// 0: None, 1: Basic, 2: Standard, 3: Advanced
 
 // Removes all traces of old order and allows you to begin configuration from scratch.
 /obj/machinery/lapvend/proc/reset_order()
@@ -38,6 +40,9 @@
 	if(fabricated_tablet)
 		qdel(fabricated_tablet)
 		fabricated_tablet = null
+	if(fabricated_usb)
+		qdel(fabricated_usb)
+		fabricated_usb = null
 	dev_cpu = 1
 	dev_battery = 1
 	dev_disk = 1
@@ -168,11 +173,23 @@
 			if(fabricate)
 				fabricated_tablet.ai_slot = new/obj/item/weapon/computer_hardware/ai_slot(fabricated_tablet)
 		return total_price
+	else if(devtype == 3)
+		switch(dev_usb)
+			if(1) //16 GQ
+				total_price = 59
+				if(fabricate)
+					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable/basic(src)
+			if(2) //32 GQ
+				total_price = 99
+				if(fabricate)
+					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable(src)
+			if(3) //64 GQ
+				total_price = 149
+				if(fabricate)
+					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable/advanced(src)
+
+		return total_price
 	return 0
-
-
-
-
 
 /obj/machinery/lapvend/Topic(href, href_list)
 	if(..())
@@ -226,6 +243,9 @@
 		dev_aislot = text2num(href_list["hw_aislot"])
 		fabricate_and_recalc_price(0)
 		return 1
+	if(href_list["hw_usb"])
+		dev_usb = text2num(href_list["hw_usb"])
+		fabricate_and_recalc_price(0)
 	return 0
 
 /obj/machinery/lapvend/attack_hand(var/mob/user)
@@ -240,15 +260,21 @@
 	var/list/data[0]
 	data["state"] = state
 	if(state == 1)
-		data["devtype"] = devtype
-		data["hw_battery"] = dev_battery
-		data["hw_disk"] = dev_disk
-		data["hw_netcard"] = dev_netcard
-		data["hw_tesla"] = dev_tesla
-		data["hw_nanoprint"] = dev_nanoprint
-		data["hw_card"] = dev_card
-		data["hw_cpu"] = dev_cpu
-		data["hw_aislot"] = dev_aislot
+		if(devtype == 3)
+			data["devtype"] = devtype
+			data["hw_usb"] = dev_usb
+		else
+			data["devtype"] = devtype
+			data["hw_battery"] = dev_battery
+			data["hw_disk"] = dev_disk
+			data["hw_netcard"] = dev_netcard
+			data["hw_tesla"] = dev_tesla
+			data["hw_nanoprint"] = dev_nanoprint
+			data["hw_card"] = dev_card
+			data["hw_cpu"] = dev_cpu
+			data["hw_aislot"] = dev_aislot
+
+
 	if(state == 1 || state == 2)
 		data["totalprice"] = total_price
 
@@ -281,6 +307,10 @@ obj/machinery/lapvend/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				fabricated_tablet.forceMove(src.loc)
 				fabricated_tablet.update_verbs()
 				fabricated_tablet = null
+			else if((devtype == 3) && fabricated_usb)
+				fabricated_usb.forceMove(src.loc)
+				fabricated_usb = null
+
 			ping("Enjoy your new product!")
 			state = 3
 			return 1

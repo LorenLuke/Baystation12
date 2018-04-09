@@ -193,7 +193,7 @@
 	PRG = program
 
 	var/obj/item/weapon/computer_hardware/hard_drive/HDD
-	var/obj/item/weapon/computer_hardware/hard_drive/portable/RHDD
+	var/obj/item/weapon/computer_hardware/portable/USB
 	if(PRG.error)
 		data["error"] = PRG.error
 	if(PRG.browsing)
@@ -210,9 +210,9 @@
 						"size" = F.size
 					)))
 			data["files"] = files
-
-			RHDD = PRG.computer.portable_drive
-			if(RHDD)
+			USB = PRG.computer.usb_slot
+			if(USB && USB.usb_type == 1)
+				var/obj/item/weapon/computer_hardware/hard_drive/RHDD = USB.internal_device
 				data["usbconnected"] = 1
 				var/list/usbfiles[0]
 				for(var/datum/computer_file/F in RHDD.stored_files)
