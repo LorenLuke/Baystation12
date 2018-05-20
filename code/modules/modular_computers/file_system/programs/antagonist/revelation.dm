@@ -1,3 +1,4 @@
+//	COREPURGE - Deletes all files on the hard drive, including the undeletable ones. Something like software self-destruct for computer.
 /datum/computer_file/program/revelation
 	filename = "revelation"
 	filedesc = "Revelation"

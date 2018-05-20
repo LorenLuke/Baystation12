@@ -4,7 +4,7 @@ Program-based computers, designed to replace computer3 project and eventually mo
 
 1. Basic information
 Program based computers will allow you to do multiple things from single computer. Each computer will have programs, with more being downloadable from NTNet (stationwide network with wireless coverage)
-if user has apropriate ID card access. It will be possible to hack the computer by using an emag on it - the emag will have to be completely new and will be consumed on use, but it will
+if user has appropriate ID card access. It will be possible to hack the computer by using an emag on it - the emag will have to be completely new and will be consumed on use, but it will
 lift ALL locks on ALL installed programs, and allow download of programs even if your ID doesn't have access to them. Computers will have hard drives that can store files.
 Files can be programs (datum/computer_file/program/ subtype) or data files (datum/computer_file/data/ subtypes). Program for sending files will be available that will allow transfer via NTNet.
 NTNet coverage will be limited to station's Z level, but better network card (=more expensive and higher power use) will allow usage everywhere. Hard drives will have limited capacity for files
@@ -28,14 +28,34 @@ Tablets can't be equipped with tesla link, which means they have to be recharged
 
 3. Computer Hardware
 Computers will come with basic hardware installed, with upgrades being selectable when purchasing the device.
-Hard Drive: Stores data, mandatory for the computer to work
-Network Card: Connects to NTNet
-Battery: Internal power source that ensures the computer operates when not connected to APC.
-Extras (those won't be installed by default, but can be bought)
-ID Card Slot: Required for HoP-style programs to work. Access for security record-style programs is read from ID of user [RFID?] without requiring this
-APC Tesla Relay: Wirelessly powers the device from APC. Consoles have it by default. Laptops can buy it.
-Disk Drive: Allows usage of portable data disks.
-Nano Printer: Allows the computer to scan paper contents and save them to file, as well as recycle papers and print stuff on it.
+Hardware is sorted into several categories. All internal devices are categorised by size, and will only fit into some devices.
+Most (but not all) peripherals do not have a size and will fit into any device.
+Devices with size:
+	Devices may be categorised by the following size classes:
+	-Femto: Used in PDAs only
+	-Pico: Used in PDAs and Tablets
+	-Nano: Used in PDAs, Tablets, and Laptops
+	-Micro: Used in Tablets, and Laptops
+	-Standard(classless): Used in Tablets, Laptops and Consoles/Telescreens
+	-Macro: Used in Laptops and Consoles/Telescreens
+	-Console: Used only in Consoles/Telescreens
+
+	Some larger devices might work better than smaller ones of the same class
+
+Built in devices: These devices come with every device.
+	Hard Drive: Stores data, mandatory for the computer to work
+	Battery: Internal power source that ensures the computer operates when not connected to APC.
+
+Peripherals: These devices may be purchased from the vendor and attached to the device for extended functionality
+	Network Card: Connects to NTNet
+	ID Card Slot: Required for HoP-style programs to work. Access for security record-style programs is read from ID of user [RFID?] without requiring this
+	Nano Printer: Allows the computer to scan paper contents and save them to file, as well as recycle papers and print stuff on it.
+	Tesla Relay: Wirelessly powers the device from APC. Consoles have it by default. Laptops can buy it.
+
+Disk Drive:
+	All devices come in with a built in Uinversal Serial Bus drive. Data crystals containing optronic networks can be used to store
+	and transfer various programs from device to device.
+
 
 4. NTNet
 NTNet is stationwide network that allows users to download programs needed for their work. It will be possible to send any files to other active computers using relevant program (NTN Transfer).

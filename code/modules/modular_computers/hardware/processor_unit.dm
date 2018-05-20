@@ -5,40 +5,184 @@
 	name = "standard processor"
 	desc = "A standard CPU used in most computers. It can run up to three programs simultaneously."
 	icon_state = "cpu_normal"
-	hardware_size = 2
-	power_usage = 50
+	hardware_size = 5
+	power_usage = 80
 	critical = 1
 	malfunction_probability = 1
 	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	var/max_idle_programs = 1 // 2 idle, + 1 active = 3 as said in description.
 
-	var/max_idle_programs = 2 // 2 idle, + 1 active = 3 as said in description.
 
-/obj/item/weapon/computer_hardware/processor_unit/small
-	name = "standard microprocessor"
-	desc = "A standard miniaturised CPU used in portable devices. It can run up to two programs simultaneously."
-	icon_state = "cpu_small"
+/obj/item/weapon/computer_hardware/processor_unit/femto
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 1
+	power_usage = 10
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 0
+
+/obj/item/weapon/computer_hardware/processor_unit/femto/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
 	hardware_size = 1
 	power_usage = 25
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
 	max_idle_programs = 1
-	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+
+/obj/item/weapon/computer_hardware/processor_unit/pico
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 2
+	power_usage = 20
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 0
+
+
+/obj/item/weapon/computer_hardware/processor_unit/pico/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 2
+	power_usage = 35
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 1
+
+
+/obj/item/weapon/computer_hardware/processor_unit/nano
+
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 3
+	power_usage = 30
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 0
+
+/obj/item/weapon/computer_hardware/processor_unit/nano/photonic
+
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 3
+	power_usage = 55
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 2
+
+
+/obj/item/weapon/computer_hardware/processor_unit/micro
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 4
+	power_usage = 45
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 1
+
+/obj/item/weapon/computer_hardware/processor_unit/micro/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 4
+	power_usage = 70
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 2
 
 /obj/item/weapon/computer_hardware/processor_unit/photonic
-	name = "photonic processor"
-	desc = "An advanced experimental CPU that uses photonic core instead of regular circuitry. It can run up to five programs simultaneously, but uses a lot of power."
-	icon_state = "cpu_normal_photonic"
-	hardware_size = 2
-	power_usage = 250
-	max_idle_programs = 4
-	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 4)
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 5
+	power_usage = 90
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 3
 
-/obj/item/weapon/computer_hardware/processor_unit/photonic/small
-	name = "photonic microprocessor"
-	desc = "An advanced miniaturised CPU for use in portable devices. It uses photonic core instead of regular circuitry. It can run up to three programs simultaneously."
-	icon_state = "cpu_small_photonic"
-	hardware_size = 1
-	power_usage = 75
-	max_idle_programs = 2
-	origin_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 3)
+
+/obj/item/weapon/computer_hardware/processor_unit/macro
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 6
+	power_usage = 95
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 3
+
+/obj/item/weapon/computer_hardware/processor_unit/macro/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 6
+	power_usage = 120
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 4
+
+/obj/item/weapon/computer_hardware/processor_unit/console
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 7
+	power_usage = 115
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 3
+
+/obj/item/weapon/computer_hardware/processor_unit/console/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 7
+	power_usage = 165
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 4
+
+/obj/item/weapon/computer_hardware/processor_unit/server
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 7
+	power_usage = 175
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 4
+
+/obj/item/weapon/computer_hardware/processor_unit/server/photonic
+	name = "standard processor"
+	desc = "A standard CPU used in most computers. It can run only one program."
+	icon_state = "cpu_normal"
+	hardware_size = 8
+	power_usage = 175
+	critical = 1
+	malfunction_probability = 1
+	origin_tech = list(TECH_DATA = 0, TECH_ENGINEERING = 0)
+	max_idle_programs = 4
 
 /obj/item/weapon/computer_hardware/processor_unit/Destroy()
 	if(holder2 && (holder2.processor_unit == src))

@@ -7,7 +7,7 @@
 
 	icon_state_menu = "menu"
 	hardware_flag = PROGRAM_TABLET
-	max_hardware_size = 1
+	hardware_sizes = list(2, 3, 4, 5)
 	w_class = ITEM_SIZE_SMALL
 	light_strength = 5 // same as PDAs
 

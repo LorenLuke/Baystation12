@@ -19,16 +19,18 @@
 	var/devtype = 0 						// 0: None(unselected), 1: Laptop, 2: Tablet
 	var/total_price = 0						// Price of currently vended device.
 
-	// Device loadout
-	var/dev_cpu = 1							// 1: Default, 2: Upgraded
-	var/dev_battery = 1						// 1: Default, 2: Upgraded, 3: Advanced
-	var/dev_disk = 1						// 1: Default, 2: Upgraded, 3: Advanced
+	// Device loadout- 1: femto, 2; pico, 3:nano, 4:micro, 5: standard, 6: macro
+	var/dev_cpu = 1
+	var/dev_battery = 1
+	var/dev_disk = 1
+	var/dev_tesla = 0
+
 	var/dev_netcard = 0						// 0: None, 1: Basic, 2: Long-Range
-	var/dev_tesla = 0						// 0: None, 1: Standard
 	var/dev_nanoprint = 0					// 0: None, 1: Standard
 	var/dev_card = 0						// 0: None, 1: Standard
 	var/dev_aislot = 0						// 0: None, 1: Standard
-	var/dev_usb = 0							// 0: None, 1: Basic, 2: Standard, 3: Advanced
+
+	var/dev_usb = 0							// 0: None, 1: 16, 2: 32, 3: 64
 
 // Removes all traces of old order and allows you to begin configuration from scratch.
 /obj/machinery/lapvend/proc/reset_order()
@@ -55,69 +57,92 @@
 // Recalculates the price and optionally even fabricates the device.
 /obj/machinery/lapvend/proc/fabricate_and_recalc_price(var/fabricate = 0)
 	total_price = 0
+
 	if(devtype == 1) 		// Laptop, generally cheaper to make it accessible for most station roles
 		if(fabricate)
 			fabricated_laptop = new(src)
 		total_price = 99
-		switch(dev_cpu)
-			if(1)
-				if(fabricate)
-					fabricated_laptop.processor_unit = new/obj/item/weapon/computer_hardware/processor_unit/small(fabricated_laptop)
-			if(2)
-				if(fabricate)
-					fabricated_laptop.processor_unit = new/obj/item/weapon/computer_hardware/processor_unit(fabricated_laptop)
-				total_price += 299
-		switch(dev_battery)
-			if(1) // Basic(750C)
-				if(fabricate)
-					fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module(fabricated_laptop)
-			if(2) // Upgraded(1100C)
-				if(fabricate)
-					fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module/advanced(fabricated_laptop)
-				total_price += 199
-			if(3) // Advanced(1500C)
-				if(fabricate)
-					fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module/super(fabricated_laptop)
-				total_price += 499
-		switch(dev_disk)
-			if(1) // Basic(128GQ)
-				if(fabricate)
-					fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive(fabricated_laptop)
-			if(2) // Upgraded(256GQ)
-				if(fabricate)
-					fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive/advanced(fabricated_laptop)
-				total_price += 99
-			if(3) // Advanced(512GQ)
-				if(fabricate)
-					fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive/super(fabricated_laptop)
-				total_price += 299
-		switch(dev_netcard)
-			if(1) // Basic(Short-Range)
-				if(fabricate)
-					fabricated_laptop.network_card = new/obj/item/weapon/computer_hardware/network_card(fabricated_laptop)
-				total_price += 99
-			if(2) // Advanced (Long Range)
-				if(fabricate)
-					fabricated_laptop.network_card = new/obj/item/weapon/computer_hardware/network_card/advanced(fabricated_laptop)
-				total_price += 299
-		if(dev_tesla)
-			total_price += 399
+	switch(dev_cpu)
+		if(1)
+			if(fabricate)
+				fabricated_laptop.processor_unit = new/obj/item/weapon/computer_hardware/processor_unit/small(fabricated_laptop)
+		if(2)
+			if(fabricate)
+				fabricated_laptop.processor_unit = new/obj/item/weapon/computer_hardware/processor_unit(fabricated_laptop)
+			total_price += 299
+		if(3)
+			if(fabricate)
+		if(4)
+			if(fabricate)
+		if(5)
+			if(fabricate)
+		if(6)
+			if(fabricate)
+
+	switch(dev_battery)
+		if(1)
+			if(fabricate)
+				fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module(fabricated_laptop)
+		if(2)
+			if(fabricate)
+				fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module/advanced(fabricated_laptop)
+			total_price += 199
+		if(3) // Advanced(1500C)
+			if(fabricate)
+				fabricated_laptop.battery_module = new/obj/item/weapon/computer_hardware/battery_module/super(fabricated_laptop)
+			total_price += 499
+		if(4)
+		if(5)
+		if(6)
+
+	switch(dev_disk)
+		if(1) // Basic(128GQ)
+			if(fabricate)
+				fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive(fabricated_laptop)
+		if(2) // Upgraded(256GQ)
+			if(fabricate)
+				fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive/advanced(fabricated_laptop)
+			total_price += 99
+		if(3) // Advanced(512GQ)
+			if(fabricate)
+				fabricated_laptop.hard_drive = new/obj/item/weapon/computer_hardware/hard_drive/super(fabricated_laptop)
+			total_price += 299
+		if(4)
+		if(5)
+		if(6)
+
+	switch(dev_netcard)
+		if(1) // Basic(Short-Range)
+			if(fabricate)
+				fabricated_laptop.network_card = new/obj/item/weapon/computer_hardware/network_card(fabricated_laptop)
+			total_price += 99
+		if(2) // Advanced (Long Range)
+			if(fabricate)
+				fabricated_laptop.network_card = new/obj/item/weapon/computer_hardware/network_card/advanced(fabricated_laptop)
+			total_price += 299
+	switch(dev_tesla)
+		if(1) //micro
+			if(fabricate)
+				fabricated_laptop.tesla_link = new/obj/item/weapon/computer_hardware/tesla_link/micro(fabricated_laptop)
+			total_price += 249
+		if(2) //standard
 			if(fabricate)
 				fabricated_laptop.tesla_link = new/obj/item/weapon/computer_hardware/tesla_link(fabricated_laptop)
-		if(dev_nanoprint)
-			total_price += 99
-			if(fabricate)
-				fabricated_laptop.nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(fabricated_laptop)
-		if(dev_card)
-			total_price += 199
-			if(fabricate)
-				fabricated_laptop.card_slot = new/obj/item/weapon/computer_hardware/card_slot(fabricated_laptop)
-		if(dev_aislot)
-			total_price += 499
-			if(fabricate)
-				fabricated_laptop.ai_slot = new/obj/item/weapon/computer_hardware/ai_slot(fabricated_laptop)
+			total_price += 399
+	if(dev_nanoprint)
+		total_price += 99
+		if(fabricate)
+			fabricated_laptop.nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(fabricated_laptop)
+	if(dev_card)
+		total_price += 199
+		if(fabricate)
+			fabricated_laptop.card_slot = new/obj/item/weapon/computer_hardware/card_slot(fabricated_laptop)
+	if(dev_aislot)
+		total_price += 499
+		if(fabricate)
+			fabricated_laptop.ai_slot = new/obj/item/weapon/computer_hardware/ai_slot(fabricated_laptop)
 
-		return total_price
+	return total_price
 	else if(devtype == 2) 	// Tablet, more expensive, not everyone could probably afford this.
 		if(fabricate)
 			fabricated_tablet = new(src)
@@ -165,9 +190,9 @@
 			if(fabricate)
 				fabricated_tablet.card_slot = new/obj/item/weapon/computer_hardware/card_slot(fabricated_tablet)
 		if(dev_tesla)
-			total_price += 399
+			total_price += 299
 			if(fabricate)
-				fabricated_tablet.tesla_link = new/obj/item/weapon/computer_hardware/tesla_link(fabricated_tablet)
+				fabricated_tablet.tesla_link = new/obj/item/weapon/computer_hardware/tesla_link/micro(fabricated_tablet)
 		if(dev_aislot)
 			total_price += 499
 			if(fabricate)
@@ -176,15 +201,15 @@
 	else if(devtype == 3)
 		switch(dev_usb)
 			if(1) //16 GQ
-				total_price = 59
+				total_price = 139
 				if(fabricate)
 					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable/basic(src)
 			if(2) //32 GQ
-				total_price = 99
+				total_price = 229
 				if(fabricate)
 					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable(src)
 			if(3) //64 GQ
-				total_price = 149
+				total_price = 349
 				if(fabricate)
 					fabricated_usb = new/obj/item/weapon/computer_hardware/hard_drive/portable/advanced(src)
 
@@ -287,10 +312,9 @@
 
 
 obj/machinery/lapvend/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	var/obj/item/weapon/card/id/I = W.GetIdCard()
 	// Awaiting payment state
 	if(state == 2)
-		if(process_payment(I,W))
+		if(process_payment(W))
 			fabricate_and_recalc_price(1)
 			if((devtype == 1) && fabricated_laptop)
 				if(fabricated_laptop.battery_module)
@@ -309,6 +333,8 @@ obj/machinery/lapvend/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				fabricated_tablet = null
 			else if((devtype == 3) && fabricated_usb)
 				fabricated_usb.forceMove(src.loc)
+				world << fabricated_usb
+				world << "move USB!"
 				fabricated_usb = null
 
 			ping("Enjoy your new product!")
@@ -319,28 +345,44 @@ obj/machinery/lapvend/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 
 // Simplified payment processing, returns 1 on success.
-/obj/machinery/lapvend/proc/process_payment(var/obj/item/weapon/card/id/I, var/obj/item/ID_container)
-	if(I==ID_container || ID_container == null)
-		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
-	else
-		visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
-	var/datum/money_account/customer_account = I ? get_account(I.associated_account_number) : null
-	if (!customer_account || customer_account.suspended)
-		ping("Connection error. Unable to connect to account.")
-		return 0
-
-	if(customer_account.security_level != 0) //If card requires pin authentication (ie seclevel 1 or 2)
-		var/attempt_pin = input("Enter pin code", "Vendor transaction") as num
-		customer_account = attempt_account_access(I.associated_account_number, attempt_pin, 2)
-
-		if(!customer_account)
-			ping("Unable to access account: incorrect credentials.")
+/obj/machinery/lapvend/proc/process_payment(var/obj/item/weapon/W)
+	var/obj/item/weapon/card/id/I = W.GetIdCard()
+	if(I && istype(I, /obj/item/weapon/card/id))
+		var/obj/item/ID_container = W
+		if(I==ID_container || ID_container == null)
+			visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
+		else
+			visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
+		var/datum/money_account/customer_account = I ? get_account(I.associated_account_number) : null
+		if (!customer_account || customer_account.suspended)
+			ping("Connection error. Unable to connect to account.")
 			return 0
+		if(customer_account.security_level != 0) //If card requires pin authentication (ie seclevel 1 or 2)
+			var/attempt_pin = input("Enter pin code", "Vendor transaction") as num
+			customer_account = attempt_account_access(I.associated_account_number, attempt_pin, 2)
 
-	if(total_price > customer_account.money)
-		ping("Insufficient funds in account.")
-		return 0
-	else
-		var/datum/transaction/T = new("Computer Manufacturer (via [src.name])", "Purchase of [(devtype == 1) ? "laptop computer" : "tablet microcomputer"].", -total_price, src.name)
-		customer_account.do_transaction(T)
-		return 1
+			if(!customer_account)
+				ping("Unable to access account: incorrect credentials.")
+				return 0
+
+		if(total_price > customer_account.money)
+			ping("Insufficient funds in account.")
+			return 0
+		else
+			var/datum/transaction/T = new("Computer Manufacturer (via [src.name])", "Purchase of [(devtype == 1) ? "laptop computer" : "tablet microcomputer"].", -total_price, src.name)
+			customer_account.do_transaction(T)
+			return 1
+
+	else if(istype(W, /obj/item/weapon/spacecash))
+		var/obj/item/weapon/spacecash/S = W
+		if(S.worth >= total_price && total_price > 0)
+
+			var/amount = total_price
+			S.worth -= amount
+			S.update_icon()
+			if(!S.worth)
+				usr.drop_from_inventory(S)
+				qdel(S)
+			return 1
+		else
+			ping("Unable to process order: insufficient amount.")

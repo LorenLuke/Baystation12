@@ -4,7 +4,7 @@
 	power_usage = 10 //W
 	critical = 0
 	icon_state = "cardreader"
-	hardware_size = 1
+	hardware_size = 0
 	origin_tech = list(TECH_DATA = 2)
 	usage_flags = PROGRAM_ALL & ~PROGRAM_PDA
 	var/can_write = TRUE

@@ -1,40 +1,76 @@
 /obj/item/weapon/computer_hardware/hard_drive/
 	name = "basic hard drive"
-	desc = "A small power efficient solid state drive, with 128GQ of storage capacity for use in basic computers where power efficiency is desired."
-	power_usage = 25					// SSD or something with low power usage
-	icon_state = "hdd_normal"
-	hardware_size = 1
+	desc = "A small power efficient solid state drive, with 128GQ of storage capacity for use in tablets, laptops, and consoles where efficient storage is desired."
+	power_usage = 65					// SSD or something with low power usage
+	icon_state = "hdd_standard"
+	hardware_size = 5
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
-	var/max_capacity = 128
+	var/max_capacity = 256
 	var/used_capacity = 0
 	var/list/stored_files = list()		// List of stored files on this drive. DO NOT MODIFY DIRECTLY!
 
-/obj/item/weapon/computer_hardware/hard_drive/advanced
+/obj/item/weapon/computer_hardware/hard_drive/femto
+	name = "femto hard drive"
+	desc = "A miniscule hyper efficient solid state drive, with 16GQ of storage capacity for use in PDA devices where power efficiency is critical."
+	power_usage = 2 // Tiny, barely runs, but takes no power
+	standby_power_usage = 0.2
+	icon_state = "hdd_femto"
+	max_capacity = 16
+	hardware_size = 1
+
+/obj/item/weapon/computer_hardware/hard_drive/pico
+	name = "pico hard drive"
+	desc = "A tiny super efficient solid state drive, with 32GQ of storage capacity for use in PDAs and tablets where power efficiency is required."
+	power_usage = 5 // small, but takes little power
+	standby_power_usage = 0.5
+	icon_state = "hdd_pico"
+	max_capacity = 32
+	hardware_size = 2
+
+/obj/item/weapon/computer_hardware/hard_drive/nano
+	name = "pico hard drive"
+	desc = "A small, efficient solid state drive, with 64GQ of storage capacity for use in PDAs, tablets, and laptops where power efficiency trumps storage space."
+	power_usage = 15 // Tiny, barely runs, but takes no power
+	standby_power_usage = 1.5
+	max_capacity = 64
+	icon_state = "hdd_nano"
+	hardware_size = 3
+
+/obj/item/weapon/computer_hardware/hard_drive/micro
+	name = "pico hard drive"
+	desc = "A small, efficient solid state drive, with 128GQ of storage capacity for use in tablets and laptops for a balance of efficiency and storage space."
+	power_usage = 35 // Tiny, barely runs, but takes no power
+	standby_power_usage = 7
+	max_capacity = 128
+	icon_state = "hdd_micro"
+	hardware_size = 4
+
+/obj/item/weapon/computer_hardware/hard_drive/macro
 	name = "advanced hard drive"
-	desc = "A small hybrid hard drive with 256GQ of storage capacity for use in higher grade computers where balance between power efficiency and capacity is desired."
-	max_capacity = 256
-	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
-	power_usage = 50 					// Hybrid, medium capacity and medium power storage
-	icon_state = "hdd_advanced"
-	hardware_size = 2
-
-/obj/item/weapon/computer_hardware/hard_drive/super
-	name = "super hard drive"
-	desc = "A small hard drive with 512GQ of storage capacity for use in cluster storage solutions where capacity is more important than power efficiency."
+	desc = "A large hybrid hard drive with 512GQ of storage capacity for use in tablets and consoles, where balance between power efficiency and capacity is desired."
 	max_capacity = 512
-	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
-	power_usage = 100					// High-capacity but uses lots of power, shortening battery life. Best used with APC link.
-	icon_state = "hdd_super"
-	hardware_size = 2
+	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+	power_usage = 130 					// Hybrid, medium capacity and medium power storage
+	icon_state = "hdd_macro"
+	hardware_size = 6
 
-/obj/item/weapon/computer_hardware/hard_drive/cluster
+/obj/item/weapon/computer_hardware/hard_drive/console
+	name = "console hard drive"
+	desc = "A massive hard drive with 1024GQ of storage capacity for use in cluster storage solutions where capacity is more important than power efficiency."
+	max_capacity = 1024
+	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+	power_usage = 250					// High-capacity but uses lots of power, shortening battery life. Best used with APC link.
+	icon_state = "hdd_console"
+	hardware_size = 7
+
+/obj/item/weapon/computer_hardware/hard_drive/server
 	name = "cluster hard drive"
-	desc = "A large storage cluster consisting of multiple hard drives for usage in high capacity storage systems. Has capacity of 2048 GQ."
-	power_usage = 500
+	desc = "An enormous storage cluster consisting of multiple hard drives for usage in super high capacity storage systems. Has capacity of 2048 GQ."
+	power_usage = 650
 	origin_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
 	max_capacity = 2048
-	icon_state = "hdd_cluster"
-	hardware_size = 3
+	icon_state = "hdd_server"
+	hardware_size = 10
 
 // For tablets, etc. - highly power efficient.
 /obj/item/weapon/computer_hardware/hard_drive/small

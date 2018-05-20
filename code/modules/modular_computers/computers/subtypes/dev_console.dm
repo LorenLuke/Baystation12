@@ -10,7 +10,7 @@
 	density = 1
 	base_idle_power_usage = 100
 	base_active_power_usage = 500
-	max_hardware_size = 3
+	hardware_sizes = list(5, 6, 7)
 	steel_sheet_cost = 20
 	light_strength = 4
 	max_damage = 300

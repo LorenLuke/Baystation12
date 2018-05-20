@@ -12,10 +12,6 @@
 
 /obj/item/modular_computer/pda/install_default_programs()
 	..()
-
-	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
 	hard_drive.store_file(new /datum/computer_file/program/crew_manifest())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-	hard_drive.store_file(new /datum/computer_file/program/records())
 	set_autorun("emailc")

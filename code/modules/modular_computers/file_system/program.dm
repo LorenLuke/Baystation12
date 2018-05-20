@@ -2,9 +2,10 @@
 /datum/computer_file/program
 	filetype = "PRG"
 	filename = "UnknownProgram"				// File name. FILE NAME MUST BE UNIQUE IF YOU WANT THE PROGRAM TO BE DOWNLOADABLE FROM NTNET!
-	var/required_access = null				// List of required accesses to run/download the program.
-	var/requires_access_to_run = 1			// Whether the program checks for required_access when run.
+	var/required_download_access = null		// List of required accesses to download the program.
+	var/required_run_access = null			// List of required accesses to run the program.
 	var/requires_access_to_download = 1		// Whether the program checks for required_access when downloading.
+	var/requires_access_to_run = 1			// Whether the program checks for required_access when run.
 	var/datum/nano_module/NM = null			// If the program uses NanoModule, put it here and it will be automagically opened. Otherwise implement ui_interact.
 	var/nanomodule_path = null				// Path to nanomodule, make sure to set this if implementing new program.
 	var/program_state = PROGRAM_STATE_KILLED// PROGRAM_STATE_KILLED or PROGRAM_STATE_BACKGROUND or PROGRAM_STATE_ACTIVE - specifies whether this program is running.
@@ -40,7 +41,8 @@
 
 /datum/computer_file/program/clone()
 	var/datum/computer_file/program/temp = ..()
-	temp.required_access = required_access
+	temp.required_download_access = required_download_access
+	temp.required_run_access = required_run_access
 	temp.nanomodule_path = nanomodule_path
 	temp.filedesc = filedesc
 	temp.program_icon_state = program_icon_state
@@ -93,7 +95,7 @@
 /datum/computer_file/program/proc/can_run(var/mob/living/user, var/loud = 0, var/access_to_check)
 	// Defaults to required_access
 	if(!access_to_check)
-		access_to_check = required_access
+		access_to_check = required_run_access
 	if(!access_to_check) // No required_access, allow it.
 		return 1
 
@@ -134,6 +136,9 @@
 		program_state = PROGRAM_STATE_ACTIVE
 		return 1
 	return 0
+
+/datum/computer_file/program/proc/setup_program(var/mob/living/user)
+	return 1
 
 // Use this proc to kill the program. Designed to be implemented by each program if it requires on-quit logic, such as the NTNRC client.
 /datum/computer_file/program/proc/kill_program(var/forced = 0)

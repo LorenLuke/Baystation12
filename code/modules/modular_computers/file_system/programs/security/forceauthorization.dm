@@ -7,7 +7,8 @@
 	program_menu_icon = "locked"
 	requires_ntnet = 1
 	available_on_ntnet = 1
-	required_access = access_armory
+	required_run_access = access_armory
+	required_download_access = access_armory
 	nanomodule_path = /datum/nano_module/forceauthorization/
 
 /datum/nano_module/forceauthorization/

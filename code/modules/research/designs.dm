@@ -1060,59 +1060,77 @@ other types of metals and chemistry for reagents).
 	..()
 	name = "Hard drive design ([item_name])"
 
-/datum/design/item/modularcomponent/disk/normal
+/datum/design/item/modularcomponent/disk/femto
 	name = "basic hard drive"
-	id = "hdd_basic"
+	id = "hdd_femto"
 	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(DEFAULT_WALL_MATERIAL = 400, "glass" = 100)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/femto
 	sort_string = "VBAAA"
 
-/datum/design/item/modularcomponent/disk/advanced
-	name = "advanced hard drive"
-	id = "hdd_advanced"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+/datum/design/item/modularcomponent/disk/pico
+	name = "basic hard drive"
+	id = "hdd_pico"
+	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 800, "glass" = 200)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/advanced
+	materials = list(DEFAULT_WALL_MATERIAL = 400, "glass" = 100)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/pico
 	sort_string = "VBAAB"
 
-/datum/design/item/modularcomponent/disk/super
-	name = "super hard drive"
-	id = "hdd_super"
-	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+/datum/design/item/modularcomponent/disk/nano
+	name = "basic hard drive"
+	id = "hdd_nano"
+	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 1600, "glass" = 400)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/super
+	materials = list(DEFAULT_WALL_MATERIAL = 400, "glass" = 100)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/nano
 	sort_string = "VBAAC"
 
-/datum/design/item/modularcomponent/disk/cluster
-	name = "cluster hard drive"
-	id = "hdd_cluster"
-	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
-	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 3200, "glass" = 800)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/cluster
-	sort_string = "VBAAD"
-
 /datum/design/item/modularcomponent/disk/micro
-	name = "micro hard drive"
+	name = "basic hard drive"
 	id = "hdd_micro"
 	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(DEFAULT_WALL_MATERIAL = 400, "glass" = 100)
 	build_path = /obj/item/weapon/computer_hardware/hard_drive/micro
+	sort_string = "VBAAD"
+
+/datum/design/item/modularcomponent/disk/normal
+	name = "basic hard drive"
+	id = "hdd_normal"
+	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400, "glass" = 100)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/
 	sort_string = "VBAAE"
 
-/datum/design/item/modularcomponent/disk/small
-	name = "small hard drive"
-	id = "hdd_small"
+/datum/design/item/modularcomponent/disk/macro
+	name = "advanced hard drive"
+	id = "hdd_macro"
 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(DEFAULT_WALL_MATERIAL = 800, "glass" = 200)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/small
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/macro
 	sort_string = "VBAAF"
+
+/datum/design/item/modularcomponent/disk/console
+	name = "super hard drive"
+	id = "hdd_console"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 1600, "glass" = 400)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/console
+	sort_string = "VBAAG"
+
+/datum/design/item/modularcomponent/disk/server
+	name = "cluster hard drive"
+	id = "hdd_server"
+	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 3200, "glass" = 800)
+	build_path = /obj/item/weapon/computer_hardware/hard_drive/server
+	sort_string = "VBAAH"
 
 // Network cards
 /datum/design/item/modularcomponent/netcard/AssembleDesignName()
@@ -1254,104 +1272,242 @@ other types of metals and chemistry for reagents).
 	..()
 	name = "Battery design ([item_name])"
 
-/datum/design/item/modularcomponent/battery/normal
+/datum/design/item/modularcomponent/battery/femto
 	name = "standard battery module"
-	id = "bat_normal"
+	id = "bat_femto"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/femto
+	sort_string = "VBAEA"
+
+/datum/design/item/modularcomponent/battery/pico
+	name = "standard battery module"
+	id = "bat_pico"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/pico
+	sort_string = "VBAEB"
+
+/datum/design/item/modularcomponent/battery/nano
+	name = "standard battery module"
+	id = "bat_nano"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/nano
+	sort_string = "VBAEC"
+
+/datum/design/item/modularcomponent/battery/micro
+	name = "standard battery module"
+	id = "bat_femto"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/micro
+	sort_string = "VBAED"
+
+/datum/design/item/modularcomponent/battery/standard
+	name = "standard battery module"
+	id = "bat_standard"
 	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(DEFAULT_WALL_MATERIAL = 400)
 	build_path = /obj/item/weapon/computer_hardware/battery_module
-	sort_string = "VBAEA"
-
-/datum/design/item/modularcomponent/battery/advanced
-	name = "advanced battery module"
-	id = "bat_advanced"
-	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
-	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 800)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/advanced
-	sort_string = "VBAEB"
-
-/datum/design/item/modularcomponent/battery/super
-	name = "super battery module"
-	id = "bat_super"
-	req_tech = list(TECH_POWER = 3, TECH_ENGINEERING = 3)
-	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 1600)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/super
-	sort_string = "VBAEC"
-
-/datum/design/item/modularcomponent/battery/ultra
-	name = "ultra battery module"
-	id = "bat_ultra"
-	req_tech = list(TECH_POWER = 5, TECH_ENGINEERING = 4)
-	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 3200)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/ultra
-	sort_string = "VBAED"
-
-/datum/design/item/modularcomponent/battery/nano
-	name = "nano battery module"
-	id = "bat_nano"
-	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
-	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 200)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/nano
 	sort_string = "VBAEE"
 
-/datum/design/item/modularcomponent/battery/micro
-	name = "micro battery module"
-	id = "bat_micro"
-	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
+/datum/design/item/modularcomponent/battery/macro
+	name = "standard battery module"
+	id = "bat_macro"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(DEFAULT_WALL_MATERIAL = 400)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/micro
+	build_path = /obj/item/weapon/computer_hardware/battery_module/macro
 	sort_string = "VBAEF"
+
+/datum/design/item/modularcomponent/battery/console
+	name = "standard battery module"
+	id = "bat_console"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/console
+	sort_string = "VBAEG"
+
+/datum/design/item/modularcomponent/battery/server
+	name = "standard battery module"
+	id = "bat_server"
+	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 400)
+	build_path = /obj/item/weapon/computer_hardware/battery_module/server
+	sort_string = "VBAEH"
 
 // Processor unit
 /datum/design/item/modularcomponent/cpu/AssembleDesignName()
 	..()
 	name = "CPU design ([item_name])"
 
-/datum/design/item/modularcomponent/cpu/
+/datum/design/item/modularcomponent/cpu/femto
 	name = "computer processor unit"
-	id = "cpu_normal"
+	id = "cpu_femto"
 	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
 	build_type = IMPRINTER
 	materials = list(DEFAULT_WALL_MATERIAL = 1600)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/femto
 	sort_string = "VBAFA"
 
-/datum/design/item/modularcomponent/cpu/small
-	name = "computer microprocessor unit"
-	id = "cpu_small"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+/datum/design/item/modularcomponent/cpu/femto_photonic
+	name = "computer processor unit"
+	id = "cpu_femto_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
 	build_type = IMPRINTER
-	materials = list(DEFAULT_WALL_MATERIAL = 800)
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/small
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/femto/photonic
 	sort_string = "VBAFB"
 
-/datum/design/item/modularcomponent/cpu/photonic
-	name = "computer photonic processor unit"
-	id = "pcpu_normal"
-	req_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 4)
+/datum/design/item/modularcomponent/cpu/pico
+	name = "computer processor unit"
+	id = "cpu_pico"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
 	build_type = IMPRINTER
-	materials = list(DEFAULT_WALL_MATERIAL = 6400, glass = 2000)
-	chemicals = list(/datum/reagent/acid = 40)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/photonic
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/pico
 	sort_string = "VBAFC"
 
-/datum/design/item/modularcomponent/cpu/photonic/small
-	name = "computer photonic microprocessor unit"
-	id = "pcpu_small"
-	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 3)
+/datum/design/item/modularcomponent/cpu/pico_photonic
+	name = "computer processor unit"
+	id = "cpu_pico_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
 	build_type = IMPRINTER
-	materials = list(DEFAULT_WALL_MATERIAL = 3200, glass = 1000)
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/photonic/small
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/pico/photonic
 	sort_string = "VBAFD"
+
+/datum/design/item/modularcomponent/cpu/nano
+	name = "computer processor unit"
+	id = "cpu_nano"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/nano
+	sort_string = "VBAFE"
+
+/datum/design/item/modularcomponent/cpu/nano_photonic
+	name = "computer processor unit"
+	id = "cpu_nano_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/nano/photonic
+	sort_string = "VBAFF"
+
+/datum/design/item/modularcomponent/cpu/micro
+	name = "computer processor unit"
+	id = "cpu_micro"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/micro
+	sort_string = "VBAFG"
+
+/datum/design/item/modularcomponent/cpu/micro_photonic
+	name = "computer processor unit"
+	id = "cpu_micro_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/micro/photonic
+	sort_string = "VBAFH"
+
+/datum/design/item/modularcomponent/cpu/standard
+	name = "computer processor unit"
+	id = "cpu_standard"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/
+	sort_string = "VBAFI"
+
+/datum/design/item/modularcomponent/cpu/standard_photonic
+	name = "computer processor unit"
+	id = "cpu_standard_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/photonic
+	sort_string = "VBAFJ"
+
+/datum/design/item/modularcomponent/cpu/macro
+	name = "computer processor unit"
+	id = "cpu_macro"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/macro
+	sort_string = "VBAFK"
+
+/datum/design/item/modularcomponent/cpu/macro_photonic
+	name = "computer processor unit"
+	id = "cpu_macro_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/macro/photonic
+	sort_string = "VBAFL"
+
+/datum/design/item/modularcomponent/cpu/console
+	name = "computer processor unit"
+	id = "cpu_console"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/console
+	sort_string = "VBAFM"
+
+/datum/design/item/modularcomponent/cpu/console_photonic
+	name = "computer processor unit"
+	id = "cpu_console_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/console/photonic
+	sort_string = "VBAFN"
+
+/datum/design/item/modularcomponent/cpu/server
+	name = "computer processor unit"
+	id = "cpu_server"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/server
+	sort_string = "VBAFO"
+
+/datum/design/item/modularcomponent/cpu/server_photonic
+	name = "computer processor unit"
+	id = "cpu_server_photonic"
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(DEFAULT_WALL_MATERIAL = 1600)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/weapon/computer_hardware/processor_unit/server/photonic
+	sort_string = "VBAFP"
 
 //RIG Modules
 //Sidenote; Try to keep a requirement of 5 engineering for each, but keep the rest as similiar to it's original as possible.

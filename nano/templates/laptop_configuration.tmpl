@@ -41,15 +41,13 @@
 	<div class="itemContent">
 		WIP
 	</div>
-	{{if !data.networkcard_wired}}
-		<div class="itemLabel">
-			Toggle: 
-		</div>
-		<div class="itemContent">
-			{{:helper.link("ON", null, {'PC_enable_component' : data.networkcard_name}, value.enabled ? 'disabled' : null)}}
-			{{:helper.link("OFF", null, {'PC_disable_component' : data.networkcard_name}, value.enabled ? null : 'disabled')}}
-		</div>	
-	{{/if}}
+    <div class="itemLabel">
+        Toggle: 
+    </div>
+    <div class="itemContent">
+        {{:helper.link("ON", null, {'PC_enable_component' : data.networkcard_name}, data.networkcard_enabled ? 'disabled' : null)}}
+        {{:helper.link("OFF", null, {'PC_disable_component' : data.networkcard_name}, data.networkcard_enabled ? null : 'disabled')}}
+    </div>	
 	<div class="itemLabel">
 		Power Usage: 
 	</div>
@@ -186,6 +184,28 @@
 		Not Available
 	</div>
 {{/if}}
+	<hr><div class="itemLabel">
+		Tesla Relay:
+	</div>
+{{if data.tesla_exists}}
+	<div class="itemContent">
+		{{:data.tesla_name}}
+	</div>
+	<i>{{:data.tesla_desc}}</i><br>
+    
+    <div class="itemLabel">
+        Power Generation:
+    </div>
+	<div class="itemContent">
+		{{:data.tesla_rate}}/{{:data.tesla_power}}
+	</div>
+{{else}}
+	<div class="itemContent">
+		Not Available
+	</div>    
+{{/if}}
+
+
 <div class="itemLabel">
 	Total Power Usage: 
 </div>

@@ -95,9 +95,14 @@
 	if(bsod)
 		overlays.Add("bsod")
 		return
-	if(!enabled)
+	if(standby)
 		if(icon_state_screensaver)
 			overlays.Add(icon_state_screensaver)
+		set_light(0)
+		return
+	if(!enabled)
+		if(icon_state_screensaver)
+			overlays.Add(icon_state_unpowered)
 		set_light(0)
 		return
 	set_light(0.2, 0.1, light_strength)
@@ -118,14 +123,22 @@
 		if(issynth)
 			to_chat(user, "You send an activation signal to \the [src], but it responds with an error code. It must be damaged.")
 		else
-			to_chat(user, "You press the power button, but the computer fails to boot up, displaying variety of errors before shutting down again.")
+			to_chat(user, "You press the power button, but \the [src] fails to boot up, displaying variety of errors before shutting down again.")
 		return
+	if(standby)
+		if(issynth)
+			to_chat(user, "You send an activation signal to \the [src], waking it from standby mode")
+		else
+			to_chat(user, "You press the power button and wake \the [src] from standby mode")
+		standby = 0
+
 	if(processor_unit && (handle_power(1))) // Battery-run and charged or non-battery but powered by APC.
 		if(issynth)
 			to_chat(user, "You send an activation signal to \the [src], turning it on")
 		else
 			to_chat(user, "You press the power button and start up \the [src]")
 		enable_computer(user)
+
 
 	else // Unpowered
 		if(issynth)
@@ -164,6 +177,19 @@
 		visible_message("\The [src] shuts down.", range = 1)
 	enabled = 0
 	update_icon()
+
+
+/obj/item/modular_computer/proc/standby_computer(var/loud = 0)
+	kill_program(1)
+	for(var/datum/computer_file/program/P in idle_threads)
+		P.kill_program(1)
+		idle_threads.Remove(P)
+	if(loud)
+		visible_message("\The [src] shuts down.", range = 1)
+	enabled = 0
+	standby = 1
+	update_icon()
+
 
 /obj/item/modular_computer/proc/enable_computer(var/mob/user = null)
 	enabled = 1

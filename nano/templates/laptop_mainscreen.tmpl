@@ -4,5 +4,6 @@
 	<tr><td>{{:helper.link(value.desc, value.icon, {'PC_runprogram' : value.name})}}
 	<td>{{:helper.link('X', null, {'PC_killprogram' : value.name}, (value.running ? null : 'disabled'))}} 
 	<td>{{:helper.link('AR', null, {'PC_setautorun' : value.name}, null, (value.autorun ? 'yellowButton' : null))}} 
+    <td>{:helper.link('S', null, {'PC_settings' : value.name})}} 
 {{/for}}
 </table>

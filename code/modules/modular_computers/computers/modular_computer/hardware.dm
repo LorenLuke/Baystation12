@@ -5,12 +5,12 @@
 		return
 
 	// "USB" flash drive.
-	if(istype(H, /obj/item/weapon/computer_hardware/hard_drive/portable))
-		if(portable_drive)
-			to_chat(user, "This computer's portable drive slot is already occupied by \the [portable_drive].")
+	if(istype(H, /obj/item/weapon/computer_hardware/portable))
+		if(usb_slot)
+			to_chat(user, "This computer's USB slot is already occupied by \the [usb_slot].")
 			return
 		found = 1
-		portable_drive = H
+		usb_slot = H
 	else if(istype(H, /obj/item/weapon/computer_hardware/hard_drive))
 		if(hard_drive)
 			to_chat(user, "This computer's hard drive slot is already occupied by \the [hard_drive].")
@@ -68,8 +68,8 @@
 
 // Uninstalls component. Found and Critical vars may be passed by parent types, if they have additional hardware.
 /obj/item/modular_computer/proc/uninstall_component(var/mob/living/user, var/obj/item/weapon/computer_hardware/H, var/found = 0, var/critical = 0)
-	if(portable_drive == H)
-		portable_drive = null
+	if(usb_slot == H)
+		usb_slot = null
 		found = 1
 	if(hard_drive == H)
 		hard_drive = null
@@ -112,8 +112,8 @@
 
 // Checks all hardware pieces to determine if name matches, if yes, returns the hardware piece, otherwise returns null
 /obj/item/modular_computer/proc/find_hardware_by_name(var/name)
-	if(portable_drive && (portable_drive.name == name))
-		return portable_drive
+	if(usb_slot && (usb_slot.name == name))
+		return usb_slot
 	if(hard_drive && (hard_drive.name == name))
 		return hard_drive
 	if(network_card && (network_card.name == name))
@@ -139,8 +139,8 @@
 		all_components.Add(hard_drive)
 	if(network_card)
 		all_components.Add(network_card)
-	if(portable_drive)
-		all_components.Add(portable_drive)
+	if(usb_slot)
+		all_components.Add(usb_slot)
 	if(nano_printer)
 		all_components.Add(nano_printer)
 	if(card_slot)

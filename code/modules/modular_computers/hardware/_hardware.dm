@@ -4,15 +4,17 @@
 	icon = 'icons/obj/modular_components.dmi'
 	var/obj/item/modular_computer/holder2 = null
 	var/power_usage = 0 			// If the hardware uses extra power, change this.
+	var/standby_power_usage = 0		// If the hardware uses power in standby mode, change this.
 	var/enabled = 1					// If the hardware is turned off set this to 0.
 	var/critical = 1				// Prevent disabling for important component, like the HDD.
-	var/hardware_size = 1			// Limits which devices can contain this component. 1: Tablets/Laptops/Consoles, 2: Laptops/Consoles, 3: Consoles only
+	var/hardware_size = 0			// Limits which devices can contain this component. 0: sizeless (any), 1: femto, 2: pico, 3: nano, 4: micro, 5: standard, 6: macro, 7: console, 8: server
 	var/damage = 0					// Current damage level
 	var/max_damage = 100			// Maximal damage level.
 	var/damage_malfunction = 20		// "Malfunction" threshold. When damage exceeds this value the hardware piece will semi-randomly fail and do !!FUN!! things
 	var/damage_failure = 50			// "Failure" threshold. When damage exceeds this value the hardware piece will not work at all.
 	var/malfunction_probability = 10// Chance of malfunction when the component is damaged
-	var/obj/item/weapon/computer_hardware/portable/portable_holder	var/usage_flags = PROGRAM_ALL
+	var/obj/item/weapon/computer_hardware/portable/portable_holder
+	var/usage_flags = PROGRAM_ALL
 
 /obj/item/weapon/computer_hardware/attackby(var/obj/item/W as obj, var/mob/living/user as mob)
 	// Multitool. Runs diagnostics

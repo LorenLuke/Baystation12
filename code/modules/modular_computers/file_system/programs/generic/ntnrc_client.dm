@@ -5,7 +5,7 @@
 	program_key_state = "med_key"
 	program_menu_icon = "comment"
 	extended_desc = "This program allows communication over NTNRC network"
-	size = 8
+	size = 6
 	requires_ntnet = 1
 	requires_ntnet_feature = NTNET_COMMUNICATION
 	network_destination = "NTNRC server"

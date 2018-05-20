@@ -179,9 +179,9 @@
 	I.reagents.add_reagent(., I.reagents.get_free_space())
 
 /datum/gear_tweak/tablet
-	var/list/ValidProcessors = list(/obj/item/weapon/computer_hardware/processor_unit/small)
-	var/list/ValidBatteries = list(/obj/item/weapon/computer_hardware/battery_module/nano, /obj/item/weapon/computer_hardware/battery_module/micro, /obj/item/weapon/computer_hardware/battery_module)
-	var/list/ValidHardDrives = list(/obj/item/weapon/computer_hardware/hard_drive/micro, /obj/item/weapon/computer_hardware/hard_drive/small, /obj/item/weapon/computer_hardware/hard_drive)
+	var/list/ValidProcessors = list(/obj/item/weapon/computer_hardware/processor_unit/pico, /obj/item/weapon/computer_hardware/processor_unit/nano, /obj/item/weapon/computer_hardware/processor_unit/micro, /obj/item/weapon/computer_hardware/processor_unit)
+	var/list/ValidBatteries = list(/obj/item/weapon/computer_hardware/battery_module/pico, /obj/item/weapon/computer_hardware/battery_module/nano, /obj/item/weapon/computer_hardware/battery_module/micro, /obj/item/weapon/computer_hardware/battery_module)
+	var/list/ValidHardDrives = list(/obj/item/weapon/computer_hardware/hard_drive/pico, /obj/item/weapon/computer_hardware/hard_drive/micro, /obj/item/weapon/computer_hardware/hard_drive)
 	var/list/ValidNetworkCards = list(/obj/item/weapon/computer_hardware/network_card, /obj/item/weapon/computer_hardware/network_card/advanced)
 	var/list/ValidNanoPrinters = list(null, /obj/item/weapon/computer_hardware/nano_printer)
 	var/list/ValidCardSlots = list(null, /obj/item/weapon/computer_hardware/card_slot)

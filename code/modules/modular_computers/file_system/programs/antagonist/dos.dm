@@ -1,3 +1,4 @@
+//	SYSDOS - Launches a Denial of Service attack on NTNet relay. Can DoS only one relay at once. Requires NTNet connection. After some time the relay crashes until attack stops. The sysadmin will probably notice this.
 /datum/computer_file/program/ntnet_dos
 	filename = "ntn_dos"
 	filedesc = "DoS Traffic Generator"

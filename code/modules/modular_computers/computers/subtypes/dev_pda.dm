@@ -5,8 +5,7 @@
 	icon_state = "pda"
 	icon_state_unpowered = "pda"
 	hardware_flag = PROGRAM_PDA
-	max_hardware_size = 1
-	modifiable = FALSE
+	hardware_sizes = list(1, 2)
 	w_class = ITEM_SIZE_SMALL
 	light_strength = 5
 	slot_flags = SLOT_ID | SLOT_BELT
@@ -33,7 +32,7 @@
 		eject_id()
 	else
 		..()
-	
+
 // PDA box
 /obj/item/weapon/storage/box/PDAs
 	name = "box of spare PDAs"

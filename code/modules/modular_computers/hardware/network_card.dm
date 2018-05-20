@@ -7,7 +7,7 @@ var/global/ntnet_card_uid = 1
 	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 1)
 	critical = 0
 	icon_state = "netcard_basic"
-	hardware_size = 1
+	hardware_size = 0
 	var/identification_id = null	// Identification ID. Technically MAC address of this device. Can't be changed by user.
 	var/identification_string = "" 	// Identification string, technically nickname seen in the network. Can be set by user.
 	var/long_range = 0

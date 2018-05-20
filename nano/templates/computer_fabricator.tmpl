@@ -36,10 +36,18 @@
 			<td>{{:helper.link('Standard', null, { "hw_cpu" : 1 }, data.hw_cpu == 1 ? 'selected' : null)}}
 			<td>{{:helper.link('Advanced', null, { "hw_cpu" : 2 }, data.hw_cpu == 2 ? 'selected' : null)}}
 		{{/if}}
+        {{if data.devtype != 2}} 
 		<tr>
 			<td><b>Tesla Relay:</b>
 			<td>{{:helper.link('None', null, { "hw_tesla" : 0 }, data.hw_tesla == 0 ? 'selected' : null)}}
-			<td>{{:helper.link('Standard', null, { "hw_tesla" : 1 }, data.hw_tesla == 1 ? 'selected' : null)}}
+			<td>{{:helper.link('Micro', null, { "hw_tesla" : 1 }, data.hw_tesla == 1 ? 'selected' : null)}}
+            <td>{{:helper.link('Standard', null, { "hw_tesla" : 2 }, data.hw_tesla == 2 ? 'selected' : null)}}
+        {{else}}
+		<tr>
+			<td><b>Tesla Relay:</b>
+			<td>{{:helper.link('None', null, { "hw_tesla" : 0 }, data.hw_tesla != 1 ? 'selected' : null)}}
+			<td>{{:helper.link('Micro', null, { "hw_tesla" : 1 }, data.hw_tesla == 1 ? 'selected' : null)}}
+        {{/if}}
 		<tr>
 			<td><b>Nano Printer:</b>
 			<td>{{:helper.link('None', null, { "hw_nanoprint" : 0 }, data.hw_nanoprint == 0 ? 'selected' : null)}}
@@ -69,15 +77,17 @@
 		{{/if}}
 
 		{{if data.devtype == 3}} <!-- Data Crystals -->
-			<td><b>Portable Storage:</b>
+			<td><b>Portable Storage x2:</b>
 			<td>{{:helper.link('Basic', null, { "hw_usb" : 1 }, data.hw_usb == 1 ? 'selected' : null)}}
 			<td>{{:helper.link('Standard', null, { "hw_usb" : 2 }, data.hw_usb == 2 ? 'selected' : null)}}
 			<td>{{:helper.link('Advanced', null, { "hw_usb" : 3 }, data.hw_usb == 3 ? 'selected' : null)}}
-		<tr>
-			<td><b>Portable Battery:</b>
-			<td>{{:helper.link('Basic', null, { "hw_usb" : 4 }, data.hw_usb == 4 ? 'selected' : null)}}
-			<td>{{:helper.link('Standard', null, { "hw_usb" : 5 }, data.hw_usb == 5 ? 'selected' : null)}}
-			<td>{{:helper.link('Advanced', null, { "hw_usb" : 6 }, data.hw_usb == 6 ? 'selected' : null)}}
+		{{if false}}
+            <tr>
+                <td><b>Portable Battery:</b>
+                <td>{{:helper.link('Basic', null, { "hw_usb" : 4 }, data.hw_usb == 4 ? 'selected' : null)}}
+                <td>{{:helper.link('Standard', null, { "hw_usb" : 5 }, data.hw_usb == 5 ? 'selected' : null)}}
+                <td>{{:helper.link('Advanced', null, { "hw_usb" : 6 }, data.hw_usb == 6 ? 'selected' : null)}}
+        {{/if}}
 		<tr>
 			<td><b>Confirm Order:</b>
 			<td>{{:helper.link('CONFIRM', null, { "confirm_order" : 1 })}}

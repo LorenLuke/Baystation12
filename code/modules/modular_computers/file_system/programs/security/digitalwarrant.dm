@@ -12,7 +12,8 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 	program_menu_icon = "star"
 	requires_ntnet = 1
 	available_on_ntnet = 1
-	required_access = access_security
+	required_run_access = access_security
+	required_download_access = access_security
 	nanomodule_path = /datum/nano_module/digitalwarrant/
 
 /datum/nano_module/digitalwarrant/

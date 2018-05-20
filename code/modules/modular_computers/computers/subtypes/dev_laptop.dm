@@ -8,7 +8,7 @@
 	icon_state = "laptop-open"
 	base_idle_power_usage = 25
 	base_active_power_usage = 200
-	max_hardware_size = 2
+	hardware_sizes = list(3, 4, 5, 6)
 	light_strength = 3
 	max_damage = 200
 	broken_damage = 100

@@ -66,6 +66,11 @@
 	if( href_list["PC_shutdown"] )
 		shutdown_computer()
 		return 1
+
+	if( href_list["PC_standby"] )
+		standby_computer()
+		return 1
+
 	if( href_list["PC_minimize"] )
 		var/mob/user = usr
 		minimize_program(user)
@@ -83,6 +88,20 @@
 		P.kill_program(1)
 		update_uis()
 		to_chat(user, "<span class='notice'>Program [P.filename].[P.filetype] with PID [rand(100,999)] has been killed.</span>")
+
+	if( href_list["PC_settings"] )
+		var/prog = href_list["PC_settings"]
+		var/datum/computer_file/program/P = null
+		var/mob/user = usr
+		if(hard_drive)
+			P = hard_drive.find_file_by_name(prog)
+
+		if(!istype(P) || P.program_state == PROGRAM_STATE_KILLED)
+			return
+
+		//P.setup_program()
+		update_uis()
+
 
 	if( href_list["PC_runprogram"] )
 		return run_program(href_list["PC_runprogram"])

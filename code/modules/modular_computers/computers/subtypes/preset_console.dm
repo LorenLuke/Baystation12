@@ -1,7 +1,7 @@
 /obj/item/modular_computer/console/preset/install_default_hardware()
 	..()
 	processor_unit = new/obj/item/weapon/computer_hardware/processor_unit(src)
-	tesla_link = new/obj/item/weapon/computer_hardware/tesla_link(src)
+	tesla_link = new/obj/item/weapon/computer_hardware/tesla_link/wired(src)
 	hard_drive = new/obj/item/weapon/computer_hardware/hard_drive/super(src)
 	network_card = new/obj/item/weapon/computer_hardware/network_card/wired(src)
 

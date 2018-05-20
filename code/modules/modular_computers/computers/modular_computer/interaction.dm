@@ -186,7 +186,7 @@
 /obj/item/modular_computer/attack_self(var/mob/user)
 	if(enabled && screen_on)
 		ui_interact(user)
-	else if(!enabled && screen_on)
+	else if(!enabled && screen_on || standby)
 		turn_on(user)
 
 /obj/item/modular_computer/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
@@ -230,10 +230,10 @@
 
 	if(istype(W, /obj/item/weapon/computer_hardware))
 		var/obj/item/weapon/computer_hardware/C = W
-		if(C.hardware_size <= max_hardware_size)
+		if(C.hardware_size in src.hardware_sizes)
 			try_install_component(user, C)
 		else
-			to_chat(user, "This component is too large for \the [src].")
+			to_chat(user, "This component is the wrong size for \the [src].")
 	if(isWrench(W))
 		var/list/components = get_all_components()
 		if(components.len)
