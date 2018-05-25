@@ -1,8 +1,8 @@
 /datum/power/changeling/bioelectrogenesis
 	name = "Bioelectrogenesis"
-	desc = "We reconfigure a large number of cells in our body to generate an electric charge shocking what we're grabbing."
-	helptext = "We can shock someone by grabbing them and using this ability."
-	genomecost = 0
+	desc = "We reconfigure a large number of cells in our body to generate an electric charge shocking what we are grabbing."
+	helptext = "We can shock someone or something in our hands. Use for free with nothing in hand for an intimidating display."
+	genomecost = 2
 	verbpath = /mob/living/carbon/human/proc/changeling_bioelectrogenesis
 
 //Recharge whatever's in our hand, or shock people.
@@ -18,7 +18,21 @@
 	if(!changeling)
 		return 0
 
+	if(world.time < changeling.last_shock + (changeling.recursive_enhancement ? changeling.shock_delay_rec : changeling.shock_delay))
+		to_chat(src, "<span class='notice'>We must wait a bit longer to use this ability.</span>")
+		return 0
+
+	if(gloves && !gloves.siemens_coefficient)
+		//add exception for changling claws
+		to_chat(src, "<span class='warning'>Our gloves prevent us from using this ability.</span>")
+		return 0
+
 	if(!held_item)
+		visible_message("<span class='warning'>Electrical arcs form around [src]'s hand!</span>")
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(2, 1, src)
+		s.start()
+		src.mind.changeling.last_shock = world.time
 		return 0
 
 	else
@@ -27,20 +41,16 @@
 		var/siemens = 1
 		if(gloves)
 			siemens = gloves.siemens_coefficient
-			//add exception for changling claws
 
 		//If we're grabbing someone, electrocute them.
 		if(istype(held_item,/obj/item/grab))
 			var/obj/item/grab/G = held_item
 			if(G.affecting)
-				G.affecting.electrocute_act(10 * siemens * (1 + changeling.recursive_enhancement/2), src, 1.0, G.target_zone)
+				G.affecting.electrocute_act(20 * siemens * (1 + changeling.recursive_enhancement/2), src, 1.0, G.target_zone)
 
-				if(siemens)
-					visible_message("<span class='warning'>Arcs of electricity strike [G.affecting]!</span>",
-					"<span class='warning'>Our hand channels raw electricity into [G.affecting].</span>",
-					"<span class='italics'>You hear sparks!</span>")
-				else
-					src << "<span class='warning'>Our gloves block us from shocking \the [G.affecting].</span>"
+				visible_message("<span class='warning'>[src] channels of electricity into [G.affecting]!</span>",
+				"<span class='warning'>Our hand channels raw electricity into [G.affecting].</span>",
+				"<span class='italics'>You hear sparks!</span>")
 				src.mind.changeling.chem_charges -= 15
 				return 1
 
@@ -80,5 +90,5 @@
 			if(success == 0) //If we couldn't do anything with the ability, don't deduct the chemicals.
 				src << "<span class='warning'>We are unable to affect \the [held_item].</span>"
 			else
-				src.mind.changeling.chem_charges -= 10
+				src.mind.changeling.chem_charges -= 15
 			return success

@@ -967,14 +967,23 @@ About the new airlock wires panel:
 	else if(istype(C, /obj/item/weapon/pai_cable))	// -- TLE
 		var/obj/item/weapon/pai_cable/cable = C
 		cable.plugin(src, user)
-	else if(!repairing && isCrowbar(C))
-		if(src.p_open && (operating < 0 || (!operating && welded && !src.arePowerSystemsOn() && density && !src.locked)) && !brace)
-			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-			user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to remove electronics from the airlock assembly.")
-			if(do_after(user,40,src))
-				to_chat(user, "<span class='notice'>You removed the airlock electronics!</span>")
-				deconstruct(user)
-				return
+	else if(C.pry && user.a_intent != I_HURT)
+
+		if(!repairing && isCrowbar(C))
+			if(src.p_open && (operating < 0 || (!operating && welded && !src.arePowerSystemsOn() && density && !src.locked)) && !brace)
+				playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
+				user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to remove electronics from the airlock assembly.")
+				if(do_after(user,40,src))
+					to_chat(user, "<span class='notice'>You removed the airlock electronics!</span>")
+					deconstruct(user)
+					return
+		if(istype(C, /obj/item/weapon/material/twohanded/fireaxe) && !arePowerSystemsOn())
+			var/obj/item/weapon/material/twohanded/fireaxe/F = C
+			if(!F.wielded)
+				to_chat(user, "<span class='warning'>You need to be wielding \the [C] to do that.</span>")
+
+		else if(welded)
+			to_chat(user, "<span class='notice'>You must unweld the airlock first.</span>")
 		else if(arePowerSystemsOn())
 			to_chat(user, "<span class='notice'>The airlock's motors resist your efforts to force it.</span>")
 		else if(locked)
@@ -987,7 +996,7 @@ About the new airlock wires panel:
 			else
 				spawn(0)	close(1)
 
-			//if door is unbroken, but at half health or less, hit with fire axe using harm intent
+	//if door is unbroken, but at half health or less, hit with fire axe using harm intent
 	else if (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && !(stat & BROKEN) && (src.health <= src.maxhealth / 2) && user.a_intent == I_HURT)
 		var/obj/item/weapon/material/twohanded/fireaxe/F = C
 		if (F.wielded)

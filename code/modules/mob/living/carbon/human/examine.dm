@@ -8,6 +8,16 @@
 	var/skipeyes = 0
 	var/skipface = 0
 
+	var/cloaked = 0 // 0 for normal, 1 for cloaked
+
+	if(alpha <= 10 ** !istype(user, /mob/observer))
+		var/distance = get_dist(user, src)
+		if(distance > 2)
+			src.loc.examine(user)
+			return
+		else
+			cloaked = 1
+
 	//exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
 		skipgloves = wear_suit.flags_inv & HIDEGLOVES
@@ -33,6 +43,8 @@
 	var/datum/gender/T = gender_datums[get_gender()]
 	if(skipjumpsuit && skipface) //big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
+	else if (cloaked)
+		T = gender_datums[NEUTER]
 	else
 		if(icon)
 			msg += "\icon[icon] " //fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
@@ -118,6 +130,9 @@
 	//ID
 	if(wear_id)
 		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line()].\n"
+
+	if(mind && mind.changeling && mind.changeling.probocis)
+		msg += "<span class='danger'>There is a hideous tentacle sticking out of [T.his] neck!</span>"
 
 	//handcuffed?
 	if(handcuffed)
@@ -292,7 +307,8 @@
 		msg += "<span class = 'deptradio'>Medical records:</span> <a href='?src=\ref[src];medrecord=`'>\[View\]</a>\n"
 
 
-	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
+	if(print_flavor_text() && !cloaked)
+		msg += "[print_flavor_text()]\n"
 
 	msg += "*---------*</span><br>"
 	msg += applying_pressure

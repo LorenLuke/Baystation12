@@ -20,6 +20,13 @@ GLOBAL_DATUM_INIT(see_in_dark_set_event, /decl/observ/see_in_dark_set, new)
 
 /mob/proc/set_see_in_dark(var/new_see_in_dark)
 	var/old_see_in_dark = sight
-	if(old_see_in_dark != new_see_in_dark)
-		see_in_dark  = new_see_in_dark
-		GLOB.see_in_dark_set_event.raise_event(src, old_see_in_dark, new_see_in_dark)
+	var/mob/living/L = src
+	if(!(istype(L) && L.force_see_in_dark))
+		if(old_see_in_dark != new_see_in_dark)
+			see_in_dark  = new_see_in_dark
+			GLOB.see_in_dark_set_event.raise_event(src, old_see_in_dark, new_see_in_dark)
+	else
+		if(old_see_in_dark != L.force_see_in_dark)
+			see_in_dark  = L.force_see_in_dark
+			GLOB.see_in_dark_set_event.raise_event(src, old_see_in_dark, L.force_see_in_dark)
+

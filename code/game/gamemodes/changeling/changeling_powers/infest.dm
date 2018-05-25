@@ -142,7 +142,7 @@
 			changeling.isabsorbing = 0
 			return
 
-
+	var/i = 2
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
 			if(1)
@@ -169,8 +169,9 @@
 					changeling.chem_charges -= 2
 					if(T.reagents)
 						T.reagents.add_reagent(/datum/reagent/changeling/retrovirus, 5)
-						if(prob(85))
-							if(alert(T, "Do you wish to give in and join the many?",,"No","Yes") == "Yes")//Confirmation for the victim to join the lings
+						for(i, i>=0, i--)
+							if(alert(T, "Do you wish to give in and join the many? You have [i] chances remaining",,"No","Yes") == "Yes")//Confirmation for the victim to join the lings
+								i = -1
 								if (changeling.isabsorbing)
 									stage++
 									T.make_changeling()
@@ -180,8 +181,6 @@
 									T_changeling.infested_parent = changeling
 									T_changeling.readapts = 1
 									T_changeling.max_readapts = 2
-								else
-									to_chat(T, "<span class='danger'>The time for that has passed!</span>")
 
 			if(3)
 

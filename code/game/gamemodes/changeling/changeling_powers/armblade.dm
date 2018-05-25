@@ -59,20 +59,22 @@
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
 	var/weapType = "weapon"
 	var/weapLocation = "arm"
+	canremove = 0
+	pry = 1
 
 /obj/item/weapon/melee/changeling/New(location)
 	..()
 	START_PROCESSING(SSobj, src)
 	if(ismob(loc))
-		visible_message("<span class='warning'>A grotesque weapon forms around [loc.name]\'s arm!</span>",
-		"<span class='warning'>Our arm twists and mutates, transforming it into a deadly weapon.</span>",
-		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
+		visible_message("<span class='warning'>A grotesque weapon forms around [loc.name]\'s arm!</span>", \
+		"<span class='warning'>Our arm twists and mutates, transforming it into a deadly weapon.</span>", \
+		"<span class='warning'>You hear organic matter ripping and tearing!</span>")
 		src.creator = loc
 
 /obj/item/weapon/melee/changeling/dropped(mob/user)
-	visible_message("<span class='warning'>With a sickening crunch, [creator] reforms their arm!</span>",
-	"<span class='notice'>We assimilate the weapon back into our body.</span>",
-	"<span class='italics'>You hear organic matter ripping and tearing!</span>")
+	visible_message("<span class='warning'>With a sickening crunch, [creator] reforms their arm!</span>", \
+	"<span class='notice'>We assimilate the weapon back into our body.</span>", \
+	"<span class='warning'>You hear organic matter ripping and tearing!</span>")
 	playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
 	spawn(1)
 		if(src)

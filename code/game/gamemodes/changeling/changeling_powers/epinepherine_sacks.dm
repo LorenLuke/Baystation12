@@ -32,7 +32,7 @@
 //Recover from stuns.
 /mob/proc/changeling_unstun()
 	set category = "Changeling"
-	set name = "Synaptic Jolt"
+	set name = "Synaptic Jolt (30)"
 	set desc = "Allows us to recover from stuns quickly"
 
 	var/datum/changeling/changeling = changeling_power(30,0,100,UNCONSCIOUS)
@@ -43,7 +43,7 @@
 	for(var/i = 0, i<25, i++)
 
 		C.reagents.add_reagent(/datum/reagent/changeling/synaptizine, 0.5)
-		C.reagents.add_reagent(/datum/reagent/adrenaline, 1)
+		C.reagents.add_reagent(/datum/reagent/adrenaline, 0.75)
 
 	feedback_add_details("changeling_powers","UNS")
 	return 1

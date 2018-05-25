@@ -219,11 +219,11 @@
 		to_chat(user, "<span class='danger'>\The [src] is welded shut!</span>")
 		return
 
-	if(isCrowbar(C) || istype(C,/obj/item/weapon/material/twohanded/fireaxe))
+	if(C.pry)
 		if(operating)
 			return
 
-		if(blocked && isCrowbar(C))
+		if(blocked)
 			user.visible_message("<span class='danger'>\The [user] pries at \the [src] with \a [C], but \the [src] is welded in place!</span>",\
 			"You try to pry \the [src] [density ? "open" : "closed"], but it is welded in place!",\
 			"You hear someone struggle and metal straining.")
@@ -237,23 +237,23 @@
 		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
 				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
 				"You hear metal strain.")
-		if(do_after(user,30,src))
-			if(isCrowbar(C))
+		if(C.pry && user.a_intent != I_HURT)
+			if(do_after(user,30,src))
 				if(stat & (BROKEN|NOPOWER) || !density)
 					user.visible_message("<span class='danger'>\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
 					"You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
 					"You hear metal strain, and a door [density ? "open" : "close"].")
-			else
-				user.visible_message("<span class='danger'>\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!</span>",\
-					"You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
-					"You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
-			if(density)
-				spawn(0)
-					open(1)
-			else
-				spawn(0)
-					close()
-			return
+				else
+					user.visible_message("<span class='danger'>\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!</span>",\
+						"You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
+						"You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
+				if(density)
+					spawn(0)
+						open(1)
+				else
+					spawn(0)
+						close()
+				return
 
 	return ..()
 

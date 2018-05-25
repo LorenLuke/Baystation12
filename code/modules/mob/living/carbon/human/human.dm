@@ -308,6 +308,9 @@
 			return wear_mask.visible_name
 		else
 			return "Unknown"
+	else if(H.alpha <= 10)
+		return "Unknown"
+
 	return real_name
 
 //gets name from ID or PDA itself, ID inside PDA doesn't matter

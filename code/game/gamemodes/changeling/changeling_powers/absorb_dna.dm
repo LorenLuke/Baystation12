@@ -11,7 +11,9 @@
 	set name = "Absorb DNA"
 
 	var/datum/changeling/changeling = changeling_power(0,0,100)
-	if(!changeling)	return
+
+	if(!changeling)
+		return
 
 	var/obj/item/grab/G = src.get_active_hand()
 	if(!istype(G))
@@ -23,17 +25,12 @@
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
-	if(T.mind)
-		if(T.mind.changeling && changeling.infested && T.mind.changeling == changeling.infested_parent)
-			to_chat(src, "<span class='warning'>Our sense of genetic preservation prevents us from absorbing them!</span>")
-			return
-
-	if(T.species.flags & NO_SCAN)
-		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
+	if(!changeling.probocis)
+		to_chat(src, "<span class='warning'>We must extend our probocis first.</span>")
 		return
 
 	if(HUSK in T.mutations)
-		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
+		to_chat(src, "<span class='warning'>This creatureis ruined beyond useability!</span>")
 		return
 
 	if(!G.can_absorb())
@@ -48,7 +45,28 @@
 	if(!affecting)
 		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
 
+/*
+	if(T.species.flags & NO_SCAN)
+		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
+		return
+*/
+
+
+	if(T.mind)
+		if(T.mind.changeling && changeling.infested && T.mind.changeling == changeling.infested_parent)
+			to_chat(src, "<span class='warning'>Our sense of genetic preservation prevents us from absorbing them!</span>")
+			return
+
+	if(T.species.flags & NO_SCAN)
+		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
+		return
+
+
 	changeling.isabsorbing = 1
+
+
+
+
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
 			if(1)

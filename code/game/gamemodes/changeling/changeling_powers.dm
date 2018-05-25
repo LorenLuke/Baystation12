@@ -1,33 +1,62 @@
 var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa","Lambda","Mu","Nu","Xi","Omicron","Pi","Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega")
 
 /datum/changeling //stores changeling powers, changeling recharge thingie, changeling absorbed DNA and changeling ID (for changeling hivemind)
+
 	var/list/datum/absorbed_dna/absorbed_dna = list()
 	var/list/absorbed_languages = list()
 	var/absorbedcount = 0
-	var/chem_charges = 20
-	var/chem_recharge_rate = 0.5
+
 	var/list/chem_recharge_modifiers = list()
-	var/list/chem_drain_rate = 0
+	var/chem_charges = 20
 	var/chem_storage = 50
-	var/sting_range = 1
+	var/chem_recharge_rate = 0.5
+	var/list/chem_drain_rate = 0
+
 	var/changelingID = "Changeling"
+
 	var/geneticdamage = 0
-	var/isabsorbing = 0
-	var/geneticpoints = 25
+
+	var/geneticpoints = 5
 	var/max_geneticpoints
+
 	var/list/purchasedpowers = list()
 	var/mimicing = ""
+
+	var/probocis = 0
+	var/isabsorbing = 0
+	var/mob/living/carbon/human/probocis_target
+	var/nourishment = 0
+	var/last_stab = 0
+
+	var/boosted_range = 0
+	var/sting_range = 2
+	var/sting_range_rec = 5
 
 	var/readapts = 2
 	var/max_readapts = 3
 
+	var/recursive_enhancement = 0
+
+	var/armor_deployed = 0
+
+	var/last_shriek = 0
+	var/shriek_delay = 15 SECONDS
+	var/shriek_delay_rec = 10 SECONDS
+
+	var/cloaked = 0
+
+	var/last_shock = 0
+	var/shock_delay = 1 SECOND
+	var/shock_delay_rec = 1 SECOND
+
+	var/last_escape = 0
+	var/escape_delay = 4 MINUTES
+	var/escape_delay_rec = 2 MINUTES
+
 	var/infested = 0
 	var/infested_parent
+	var/list/datum/mind/changeling/infested_list = list()
 
-	var/recursive_enhancement = 0
-	var/armor_deployed = 0
-	var/last_shriek = 0
-	var/cloaked = 0
 
 /datum/changeling/New()
 	..()

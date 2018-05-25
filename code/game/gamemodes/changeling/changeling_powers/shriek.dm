@@ -23,7 +23,7 @@
 /mob/proc/changeling_resonant_shriek()
 	set category = "Changeling"
 	set name = "Resonant Shriek (20)"
-	set desc = "Emits a high-frequency sound that confuses and deafens humans, blows out nearby lights and overloads cyborg sensors."
+	set desc = "Emits a high-frequency sound that deafens and confuses humans, cyborg sensors, blows out nearby lights, and damages nearby windows."
 
 	var/datum/changeling/changeling = changeling_power(20,0,100,CONSCIOUS)
 	if(!changeling)	return 0
@@ -36,7 +36,7 @@
 			to_chat(src, "<span class='danger'>You can't speak!</span>")
 			return 0
 
-	if(world.time < (changeling.last_shriek + 10 SECONDS) )
+	if(world.time < (changeling.last_shriek + (changeling.recursive_enhancement ? changeling.shriek_delay_rec : changeling.shriek_delay)) )
 		to_chat(src, "<span class='warning'>We are still recovering from our last shriek...</span>")
 		return 0
 
@@ -73,18 +73,25 @@
 					M.Weaken(8)
 			else
 				if(M != src)
-					M << "<span class='notice'>You hear a familiar screech from nearby.  It has no effect on you.</span>"
+					to_chat(M, "<span class='notice'>You hear a familiar screech from nearby.  It has no effect on you.</span>")
 
 		if(issilicon(L))
 			to_chat(L, "<span class='notice'>Auditory input overloaded.  Reinitializing...</span>")
 			L.Weaken(rand(5,10))
 
-	for(var/obj/machinery/light/L in range(range, src))
-		L.on = 1
-		L.broken()
-	for(var/obj/structure/window/W in range(range, src))
-		W.take_damage((200 + rand(600))**0.5)
-
+	var/list/obj/objs = list()
+	for(var/i = 0, i <= range, i++)
+		sleep(2)
+		for(var/obj/machinery/light/L in range(range, src))
+			if (!(L in objs))
+				L.on = 1
+				L.broken()
+				objs.Add(L)
+		for(var/obj/structure/window/W in range(range, src))
+			if (!(W in objs))
+				var/dist = get_dist(src, W)
+				W.take_damage( (4*(900 + rand(700))**0.5)/((dist+1) ** 2) )
+				objs.Add(W)
 	changeling.last_shriek = world.time
 
 	feedback_add_details("changeling_powers","RS")
